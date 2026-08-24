@@ -54,9 +54,30 @@ _V4_SYSTEMS = {
         "500:4, 1000:4. Overrides: every v=0 input is 4; every v=1 input "
         "with a<=0 is 0. /no_think"
     ),
+    "semantic-direction-v3": (
+        "You control a six-way turret motor. The user gives TARGET, DIRECTION, "
+        "OFFSET, and AMMO. OFFSET is a non-negative horizontal distance from "
+        "the crosshair. Output exactly one ASCII digit with no whitespace or "
+        "explanation. Digits: 0=WAIT, 1=LEFT_SHORT, 2=LEFT_LONG, "
+        "3=RIGHT_SHORT, 4=RIGHT_LONG, 5=FIRE. Apply the first true rule: "
+        "TARGET=NONE means 4. Otherwise AMMO<=0 means 0. Otherwise OFFSET<=80 "
+        "means 5. Otherwise LEFT with OFFSET 81 through 220 means 1, and LEFT "
+        "with OFFSET>=221 means 2. RIGHT with OFFSET 81 through 220 means 3, "
+        "and RIGHT with OFFSET>=221 means 4. Representative cases: "
+        "NONE AMMO=10=>4; VISIBLE LEFT OFFSET=700 AMMO=10=>2; VISIBLE LEFT "
+        "OFFSET=350 AMMO=10=>2; VISIBLE LEFT OFFSET=221 AMMO=10=>2; VISIBLE "
+        "LEFT OFFSET=220 AMMO=10=>1; VISIBLE LEFT OFFSET=150 AMMO=10=>1; "
+        "VISIBLE LEFT OFFSET=81 AMMO=10=>1; VISIBLE LEFT OFFSET=80 AMMO=10=>5; "
+        "VISIBLE LEFT OFFSET=40 AMMO=10=>5; VISIBLE CENTER OFFSET=0 AMMO=10=>5; "
+        "VISIBLE RIGHT OFFSET=40 AMMO=10=>5; VISIBLE RIGHT OFFSET=80 AMMO=10=>5; "
+        "VISIBLE RIGHT OFFSET=81 AMMO=10=>3; VISIBLE RIGHT OFFSET=150 AMMO=10=>3; "
+        "VISIBLE RIGHT OFFSET=220 AMMO=10=>3; VISIBLE RIGHT OFFSET=221 AMMO=10=>4; "
+        "VISIBLE RIGHT OFFSET=350 AMMO=10=>4; VISIBLE RIGHT OFFSET=700 AMMO=10=>4; "
+        "VISIBLE LEFT OFFSET=350 AMMO=0=>0. /no_think"
+    ),
 }
 V4_POLICY_ID = os.environ.get(
-    "LATENCY_KILLS_V4_POLICY", "numeric-boundaries-v2"
+    "LATENCY_KILLS_V4_POLICY", "semantic-direction-v3"
 ).strip()
 try:
     V4_SYSTEM = _V4_SYSTEMS[V4_POLICY_ID]
@@ -127,11 +148,28 @@ os.environ.pop("HF_TOKEN", None)
 HF_TOKEN = ""
 
 
+def _model_observation(observation: str) -> str:
+    if V4_POLICY_ID != "semantic-direction-v3":
+        return observation
+    visible, x, ammo = _observation(observation)
+    if visible == 0:
+        return f"TARGET=NONE AMMO={ammo}"
+    if x < 0:
+        direction = "LEFT"
+    elif x > 0:
+        direction = "RIGHT"
+    else:
+        direction = "CENTER"
+    return (
+        f"TARGET=VISIBLE DIRECTION={direction} OFFSET={abs(x)} AMMO={ammo}"
+    )
+
+
 def _chat_ids(observation: str) -> torch.Tensor:
     batch = tokenizer.apply_chat_template(
         [
             {"role": "system", "content": V4_SYSTEM},
-            {"role": "user", "content": observation},
+            {"role": "user", "content": _model_observation(observation)},
         ],
         tokenize=True,
         add_generation_prompt=True,
@@ -365,6 +403,9 @@ def health() -> dict[str, Any]:
         "quantization": "bitsandbytes NF4, float16 compute",
         "constrained_digits": CONSTRAIN_DIGITS,
         "policy_id": V4_POLICY_ID,
+        "observation_encoding": (
+            "semantic-direction" if V4_POLICY_ID == "semantic-direction-v3" else "raw"
+        ),
         "prefix_tokens": _prefix_len,
         "load_seconds": round(LOAD_SECONDS, 3),
         "input_modes": ["v4-structured", "vago-cloud-text"],
