@@ -146,6 +146,15 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="validate all V4 motor cases without opening ViZDoom",
     )
+    remote.add_argument(
+        "--probe-profile",
+        choices=("smoke", "holdout"),
+        default="holdout",
+        help=(
+            "holdout tests coordinates absent from the prompt examples; "
+            "smoke retains the historical canonical-point wiring check"
+        ),
+    )
     return parser
 
 
@@ -561,12 +570,14 @@ async def _run_remote(args: argparse.Namespace) -> dict[str, object]:
             show_thoughts=args.show_thoughts,
             tap_mode=args.tap_mode,
             probe_case="fire",
+            motor_probe_profile=args.probe_profile,
         )
         if not probe.passed:
             failure = {
                 "mode": "remote-live",
                 "status": "probe_failed_closed",
                 "world_clock": args.world_clock,
+                "probe_profile": args.probe_profile,
                 "artifacts": str(artifacts.directory),
                 "warmup_ms": warmup_ms,
                 "remote_health": health,
@@ -585,6 +596,7 @@ async def _run_remote(args: argparse.Namespace) -> dict[str, object]:
                 "status": "probe_completed",
                 "tap_mode": args.tap_mode,
                 "world_clock": args.world_clock,
+                "probe_profile": args.probe_profile,
                 "artifacts": str(artifacts.directory),
                 "warmup_ms": warmup_ms,
                 "remote_health": health,
@@ -627,6 +639,7 @@ async def _run_remote(args: argparse.Namespace) -> dict[str, object]:
             "seed": args.seed,
             "world_clock": args.world_clock,
             "motor_body": args.motor_body,
+            "probe_profile": args.probe_profile,
             "configured_lanes": args.lanes,
             "observation_interval": args.observation_interval,
             "motor_token_max_age_ms": args.motor_token_max_age_ms,

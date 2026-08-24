@@ -10,6 +10,11 @@ from thought_leak_range.remote_lanes import (
     RemoteLanePoolClient,
     load_remote_lane_configs,
 )
+from thought_leak_range.runner import (
+    MockReasoningPilot,
+    RunArtifacts,
+    probe_raw_reasoning,
+)
 
 
 def test_load_remote_lanes_from_environment(monkeypatch) -> None:
@@ -207,3 +212,37 @@ def test_remote_live_parser_defaults_to_three_direct_motor_lanes() -> None:
     assert args.tap_mode == "direct-motor"
     assert args.lanes == 3
     assert args.lane_env == "LATENCY_KILLS_REMOTE_LANES"
+    assert args.probe_profile == "holdout"
+
+
+def test_holdout_motor_probe_uses_unseen_coordinates(tmp_path) -> None:
+    async def exercise():
+        artifacts = RunArtifacts(
+            base_dir=tmp_path,
+            run_id="holdoutprobe",
+            save_thoughts=False,
+        )
+        try:
+            return await probe_raw_reasoning(
+                pilot=MockReasoningPilot(tap_mode="direct-motor"),
+                run_id="holdoutprobe",
+                artifacts=artifacts,
+                show_thoughts=False,
+                tap_mode="direct-motor",
+                motor_probe_profile="holdout",
+            )
+        finally:
+            artifacts.close()
+
+    probe = asyncio.run(exercise())
+
+    assert probe.passed
+    assert probe.marker_action == "ALL_6"
+    assert set(probe.specialist_results) == {
+        "WAIT",
+        "LEFT_SHORT",
+        "LEFT_LONG",
+        "RIGHT_SHORT",
+        "RIGHT_LONG",
+        "FIRE",
+    }

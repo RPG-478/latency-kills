@@ -459,6 +459,7 @@ async def probe_raw_reasoning(
     show_thoughts: bool,
     tap_mode: str,
     probe_case: str = "fire",
+    motor_probe_profile: str = "smoke",
 ) -> ProbeOutcome:
     if tap_mode in {"direct-motor", "direct-motor-lite"}:
         return await _probe_direct_motor_suite(
@@ -467,6 +468,7 @@ async def probe_raw_reasoning(
             artifacts=artifacts,
             show_thoughts=show_thoughts,
             tap_mode=tap_mode,
+            probe_profile=motor_probe_profile,
         )
     cases = {
         "fire": (True, 0.0, 10),
@@ -675,16 +677,19 @@ async def _probe_direct_motor_suite(
     artifacts: RunArtifacts,
     show_thoughts: bool,
     tap_mode: str = "direct-motor",
+    probe_profile: str = "smoke",
 ) -> ProbeOutcome:
     captured_at = time.monotonic()
     if tap_mode == "direct-motor-lite":
+        if probe_profile != "smoke":
+            raise ValueError("direct-motor-lite only supports the smoke probe")
         cases = (
             (MotorToken.WAIT, True, 0.0, 0),
             (MotorToken.LEFT_HOLD, True, -0.35, 10),
             (MotorToken.RIGHT_HOLD, False, None, 10),
             (MotorToken.FIRE, True, 0.0, 10),
         )
-    else:
+    elif probe_profile == "smoke":
         cases = (
             (MotorToken.WAIT, True, 0.0, 0),
             (MotorToken.LEFT_SHORT, True, -0.15, 10),
@@ -693,6 +698,17 @@ async def _probe_direct_motor_suite(
             (MotorToken.RIGHT_LONG, False, None, 10),
             (MotorToken.FIRE, True, 0.0, 10),
         )
+    elif probe_profile == "holdout":
+        cases = (
+            (MotorToken.WAIT, True, -0.317, 0),
+            (MotorToken.LEFT_SHORT, True, -0.137, 10),
+            (MotorToken.LEFT_LONG, True, -0.437, 10),
+            (MotorToken.RIGHT_SHORT, True, 0.137, 10),
+            (MotorToken.RIGHT_LONG, False, None, 10),
+            (MotorToken.FIRE, True, 0.037, 10),
+        )
+    else:
+        raise ValueError(f"unknown direct-motor probe profile: {probe_profile}")
     frames: dict[MotorToken, object] = {}
     streams: dict[MotorToken, StreamResult] = {}
 
@@ -754,6 +770,7 @@ async def _probe_direct_motor_suite(
         "probe_started",
         model=getattr(pilot, "client", None) and pilot.client.model,
         tap_mode=tap_mode,
+        probe_profile=probe_profile,
         tokens=[expected.name for expected, *_ in cases],
     )
     await asyncio.gather(
@@ -794,6 +811,7 @@ async def _probe_direct_motor_suite(
         marker_action=f"ALL_{len(cases)}" if passed else None,
         expected_action=f"ALL_{len(cases)}",
         semantically_correct=semantically_correct,
+        probe_profile=probe_profile,
         marker_latency_ms=latency,
         specialist_results=suite_results,
     )

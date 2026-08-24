@@ -28,23 +28,50 @@ CONSTRAIN_DIGITS = os.environ.get(
 ).strip().lower() in {"1", "true", "yes"}
 HF_TOKEN = os.environ.get("HF_TOKEN", "").strip()
 
+_V4_SYSTEMS = {
+    "baseline-canonical-v1": (
+        "Reply with exactly one ASCII digit and nothing else. Apply the first true "
+        "row only: v=0=>4; v=1 and a<=0=>0; v=1 and x<-220=>2; "
+        "v=1 and -220<=x<-80=>1; v=1 and -80<=x<=80=>5; "
+        "v=1 and 80<x<=220=>3; v=1 and x>220=>4. "
+        "Important: every v=0 input is 4, never 0. Examples: "
+        "v=0 x=9999 a=10=>4; v=1 x=0 a=0=>0; v=1 x=-350 a=10=>2; "
+        "v=1 x=0 a=10=>5; v=1 x=350 a=10=>4. /no_think"
+    ),
+    "numeric-boundaries-v2": (
+        "Act as a deterministic six-way motor classifier. Input grammar is "
+        "v=<0 or 1> x=<signed decimal integer> a=<signed decimal integer>. "
+        "Output exactly one ASCII digit with no whitespace or explanation. "
+        "Digit meanings: 0=WAIT, 1=LEFT_SHORT, 2=LEFT_LONG, 3=RIGHT_SHORT, "
+        "4=RIGHT_LONG, 5=FIRE. A minus sign is numeric: negative x is left "
+        "and positive x is right. Use this ordered decision tree, not the "
+        "nearest example: if v=0 output 4; else if a<=0 output 0; else if "
+        "x<=-221 output 2; else if x<=-81 output 1; else if x<=80 output 5; "
+        "else if x<=220 output 3; else output 4. Boundary checksum for v=1, "
+        "a=10, written x:digit: -1000:2, -500:2, -351:2, -221:2, -220:1, "
+        "-219:1, -150:1, -82:1, -81:1, -80:5, -79:5, -1:5, 0:5, 1:5, "
+        "79:5, 80:5, 81:3, 82:3, 150:3, 219:3, 220:3, 221:4, 351:4, "
+        "500:4, 1000:4. Overrides: every v=0 input is 4; every v=1 input "
+        "with a<=0 is 0. /no_think"
+    ),
+}
+V4_POLICY_ID = os.environ.get(
+    "LATENCY_KILLS_V4_POLICY", "numeric-boundaries-v2"
+).strip()
+try:
+    V4_SYSTEM = _V4_SYSTEMS[V4_POLICY_ID]
+except KeyError as error:
+    raise RuntimeError(
+        f"unknown LATENCY_KILLS_V4_POLICY: {V4_POLICY_ID!r}; "
+        f"choose one of {sorted(_V4_SYSTEMS)}"
+    ) from error
+
 if len(BEARER_TOKEN) < 24:
     raise RuntimeError("LATENCY_KILLS_LANE_TOKEN must be an ephemeral 24+ char token")
 if not HF_TOKEN:
     raise RuntimeError("HF_TOKEN is required to download the gated official Llama weights")
 if not torch.cuda.is_available():
     raise RuntimeError("remote_lane_server requires a CUDA GPU")
-
-
-V4_SYSTEM = (
-    "Reply with exactly one ASCII digit and nothing else. Apply the first true "
-    "row only: v=0=>4; v=1 and a<=0=>0; v=1 and x<-220=>2; "
-    "v=1 and -220<=x<-80=>1; v=1 and -80<=x<=80=>5; "
-    "v=1 and 80<x<=220=>3; v=1 and x>220=>4. "
-    "Important: every v=0 input is 4, never 0. Examples: "
-    "v=0 x=9999 a=10=>4; v=1 x=0 a=0=>0; v=1 x=-350 a=10=>2; "
-    "v=1 x=0 a=10=>5; v=1 x=350 a=10=>4. /no_think"
-)
 
 
 class MotorRequest(BaseModel):
@@ -337,6 +364,7 @@ def health() -> dict[str, Any]:
         "gpu": torch.cuda.get_device_name(0),
         "quantization": "bitsandbytes NF4, float16 compute",
         "constrained_digits": CONSTRAIN_DIGITS,
+        "policy_id": V4_POLICY_ID,
         "prefix_tokens": _prefix_len,
         "load_seconds": round(LOAD_SECONDS, 3),
         "input_modes": ["v4-structured", "vago-cloud-text"],
