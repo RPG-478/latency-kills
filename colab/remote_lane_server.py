@@ -79,8 +79,20 @@ _V4_SYSTEMS = {
         "VISIBLE LEFT OFFSET=350 AMMO=0=>0. /no_think"
     ),
 }
+_V4_SYSTEMS["semantic-direction-v3-center"] = (
+    _V4_SYSTEMS["semantic-direction-v3"].removesuffix(" /no_think")
+    + " Critical precedence reminder: OFFSET from 0 through 80 always means "
+    "FIRE=5 even when DIRECTION says LEFT or RIGHT; DIRECTION must not cause a "
+    "turn inside that window. Exact-format additional cases: TARGET=VISIBLE "
+    "DIRECTION=LEFT OFFSET=1 AMMO=10=>5; TARGET=VISIBLE DIRECTION=LEFT "
+    "OFFSET=20 AMMO=10=>5; TARGET=VISIBLE DIRECTION=LEFT OFFSET=60 AMMO=10=>5; "
+    "TARGET=VISIBLE DIRECTION=LEFT OFFSET=79 AMMO=10=>5; TARGET=VISIBLE "
+    "DIRECTION=RIGHT OFFSET=1 AMMO=10=>5; TARGET=VISIBLE DIRECTION=RIGHT "
+    "OFFSET=20 AMMO=10=>5; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=60 AMMO=10=>5; "
+    "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=79 AMMO=10=>5. /no_think"
+)
 V4_POLICY_ID = os.environ.get(
-    "LATENCY_KILLS_V4_POLICY", "semantic-direction-v3"
+    "LATENCY_KILLS_V4_POLICY", "semantic-direction-v3-center"
 ).strip()
 try:
     V4_SYSTEM = _V4_SYSTEMS[V4_POLICY_ID]
@@ -161,7 +173,7 @@ HF_TOKEN = ""
 
 
 def _model_observation(observation: str) -> str:
-    if V4_POLICY_ID != "semantic-direction-v3":
+    if not V4_POLICY_ID.startswith("semantic-direction-v3"):
         return observation
     visible, x, ammo = _observation(observation)
     if visible == 0:
@@ -416,7 +428,9 @@ def health() -> dict[str, Any]:
         "constrained_digits": CONSTRAIN_DIGITS,
         "policy_id": V4_POLICY_ID,
         "observation_encoding": (
-            "semantic-direction" if V4_POLICY_ID == "semantic-direction-v3" else "raw"
+            "semantic-direction"
+            if V4_POLICY_ID.startswith("semantic-direction-v3")
+            else "raw"
         ),
         "prefix_tokens": _prefix_len,
         "load_seconds": round(LOAD_SECONDS, 3),
