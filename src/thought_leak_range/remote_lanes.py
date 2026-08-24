@@ -203,6 +203,11 @@ class RemoteLanePoolClient:
                 "motor_output_mode": _optional_text(
                     payload.get("motor_output_mode")
                 ),
+                "motor_label_token_counts": (
+                    payload.get("motor_label_token_counts")
+                    if isinstance(payload.get("motor_label_token_counts"), dict)
+                    else None
+                ),
             }
 
         rows = await asyncio.gather(*(check(i) for i in range(self.lane_count)))

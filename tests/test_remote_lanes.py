@@ -101,6 +101,7 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
                         "policy_id": "semantic-action-v4",
                         "observation_encoding": "semantic-direction",
                         "motor_output_mode": "action-label",
+                        "motor_label_token_counts": {"FIRE": 2},
                     },
                 )
             seen_hosts.append(host)
@@ -138,6 +139,9 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
             assert len(health) == 2
             assert {row["policy_id"] for row in health} == {
                 "semantic-action-v4"
+            }
+            assert {row["motor_label_token_counts"]["FIRE"] for row in health} == {
+                2
             }
             results = await asyncio.gather(
                 client.stream_motor(

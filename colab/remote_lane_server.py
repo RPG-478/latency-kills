@@ -97,6 +97,26 @@ _V4_SYSTEMS = {
         "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=350 AMMO=10=>RIGHT_LONG; "
         "TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 AMMO=0=>WAIT. /no_think"
     ),
+    "semantic-words-v5": (
+        "You control a turret. The user gives TARGET, DIRECTION, OFFSET, and "
+        "AMMO. OFFSET is a non-negative horizontal distance from the crosshair. "
+        "Reply with exactly one lowercase motor word and nothing else: wait, "
+        "left, west, right, east, or fire. Meanings: wait=do nothing; left=short "
+        "left turn; west=long left turn; right=short right turn; east=long right "
+        "turn; fire=shoot. West and east are motor-strength codes, not map "
+        "coordinates. Apply the first true rule: TARGET=NONE means east; "
+        "otherwise AMMO<=0 means wait; otherwise OFFSET<=80 means fire; "
+        "otherwise DIRECTION=LEFT and OFFSET<=220 means left; otherwise "
+        "DIRECTION=LEFT means west; otherwise DIRECTION=RIGHT and OFFSET<=220 "
+        "means right; otherwise DIRECTION=RIGHT means east. Examples: "
+        "TARGET=NONE AMMO=10=>east; TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 "
+        "AMMO=10=>west; TARGET=VISIBLE DIRECTION=LEFT OFFSET=150 AMMO=10=>left; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=40 AMMO=10=>fire; TARGET=VISIBLE "
+        "DIRECTION=CENTER OFFSET=0 AMMO=10=>fire; TARGET=VISIBLE DIRECTION=RIGHT "
+        "OFFSET=40 AMMO=10=>fire; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=150 "
+        "AMMO=10=>right; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=350 AMMO=10=>east; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 AMMO=0=>wait. /no_think"
+    ),
 }
 _V4_SYSTEMS["semantic-direction-v3-center"] = (
     _V4_SYSTEMS["semantic-direction-v3"].removesuffix(" /no_think")
@@ -130,7 +150,7 @@ _V4_SYSTEMS["semantic-action-v4-boundaries"] = (
     "AMMO=10=>RIGHT_LONG. /no_think"
 )
 V4_POLICY_ID = os.environ.get(
-    "LATENCY_KILLS_V4_POLICY", "semantic-action-v4-boundaries"
+    "LATENCY_KILLS_V4_POLICY", "semantic-words-v5"
 ).strip()
 try:
     V4_SYSTEM = _V4_SYSTEMS[V4_POLICY_ID]
@@ -214,6 +234,7 @@ def _model_observation(observation: str) -> str:
     if not (
         V4_POLICY_ID.startswith("semantic-direction-v3")
         or V4_POLICY_ID.startswith("semantic-action-v4")
+        or V4_POLICY_ID == "semantic-words-v5"
     ):
         return observation
     visible, x, ammo = _observation(observation)
@@ -286,6 +307,14 @@ _ACTION_WORD_TO_TOKEN = {
     "RIGHT_LONG": "4",
     "FIRE": "5",
 }
+_SEMANTIC_WORD_TO_TOKEN = {
+    "wait": "0",
+    "left": "1",
+    "west": "2",
+    "right": "3",
+    "east": "4",
+    "fire": "5",
+}
 
 
 def _infer(observation: str) -> tuple[str, float, int, str, int]:
@@ -307,17 +336,26 @@ def _infer(observation: str) -> tuple[str, float, int, str, int]:
                 past_key_values=_cache,
                 use_cache=True,
             )
-            if V4_POLICY_ID.startswith("semantic-action-v4"):
+            if (
+                V4_POLICY_ID.startswith("semantic-action-v4")
+                or V4_POLICY_ID == "semantic-words-v5"
+            ):
+                if V4_POLICY_ID == "semantic-words-v5":
+                    word_to_token = _SEMANTIC_WORD_TO_TOKEN
+                    normalize = lambda text: text.strip().lower()
+                else:
+                    word_to_token = _ACTION_WORD_TO_TOKEN
+                    normalize = lambda text: text.strip().upper()
                 completion_ids: list[int] = []
                 decision_text = ""
                 chosen_token: str | None = None
                 for _ in range(8):
                     next_id = int(output.logits[0, -1].argmax().item())
                     completion_ids.append(next_id)
-                    decision_text = tokenizer.decode(
-                        completion_ids, skip_special_tokens=True
-                    ).strip().upper()
-                    chosen_token = _ACTION_WORD_TO_TOKEN.get(decision_text)
+                    decision_text = normalize(
+                        tokenizer.decode(completion_ids, skip_special_tokens=True)
+                    )
+                    chosen_token = word_to_token.get(decision_text)
                     if chosen_token is not None:
                         break
                     if next_id == tokenizer.eos_token_id:
@@ -527,14 +565,27 @@ def health() -> dict[str, Any]:
             if (
                 V4_POLICY_ID.startswith("semantic-direction-v3")
                 or V4_POLICY_ID.startswith("semantic-action-v4")
+                or V4_POLICY_ID == "semantic-words-v5"
             )
             else "raw"
         ),
         "motor_output_mode": (
             "action-label"
             if V4_POLICY_ID.startswith("semantic-action-v4")
+            else "semantic-word"
+            if V4_POLICY_ID == "semantic-words-v5"
             else "digit"
         ),
+        "motor_label_token_counts": {
+            label: len(tokenizer.encode(label, add_special_tokens=False))
+            for label in (
+                _SEMANTIC_WORD_TO_TOKEN
+                if V4_POLICY_ID == "semantic-words-v5"
+                else _ACTION_WORD_TO_TOKEN
+                if V4_POLICY_ID.startswith("semantic-action-v4")
+                else ()
+            )
+        },
         "prefix_tokens": _prefix_len,
         "load_seconds": round(LOAD_SECONDS, 3),
         "input_modes": ["v4-structured", "vago-cloud-text"],
