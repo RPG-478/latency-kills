@@ -147,3 +147,35 @@ action spaceも一文字motorからaction名＋同時押しへ変わっている
   `62132e34bcc4817f2b338676281a47784eea231023584cb7abd6e8cd79d06857`
 - [seed 14 valid-clock rerun](results/vago-cloud-text-openrouter-groq-seed14-rerun-20260823.json) — SHA-256
   `2365e54b71d07e07f15e1c796a0bc2d3383fb6eac19d6dde7649edc4083c0c63`
+
+## Colab二T4 — 同じ公開promptをローカルGPUで読む
+
+2026-08-24、二つのColab T4へLlama 3.1 8B Instructを4-bit NF4で一体ずつ置き、同じ
+VAGO Cloud text contractをseed 7〜16で実行した。三台目はColabの同時session上限で借りられなかった。
+
+| 指標 | OpenRouter / Groq 3 lane | Colab 2 T4・cache前 | Colab 2 T4・system cache後 |
+| --- | ---: | ---: | ---: |
+| kill / 平均 | 7 / 0.7 | 9 / **0.9** | 9 / **0.9** |
+| completed decision | 958 | 161 | 281 |
+| model / server compute | 360.6 ms API completion | 1,387.9 ms | **1,040.4 ms** |
+| observation-to-result | 386.3 ms | 1,546.2 ms | **1,193.0 ms** |
+| action age | 11.75 tic | 53.89 tic | **41.39 tic** |
+| mean native clock | 34.41 Hz | 34.99 Hz | 34.86 Hz |
+| parser fallback / request error | 0 | 0 | 0 |
+
+Colab版のcompletionは平均5.1 tokenしかない。それでもcache前は約1.39秒かかったため、長い回答では
+なく、毎回平均697.7 prompt tokenをNF4 T4でprefillする時間が支配していた。Groqはこの長入力を
+約4倍速く処理しており、**ローカルGPUだからCloudより低遅延、とは限らない**。
+
+構造化V4と同じ発明を移植し、公開system promptのKVだけをlaneごとに保持した。ASCII画面、depth、
+prompt本文、temperature 0.7、action parserは変更していない。10本比較ではcompute -25.0%、
+delivery -22.8%、action age -23.2%、判断数 +74.5%まで改善したが、killは9のままだった。
+速度改善は生存時間を12.35秒から17.02秒へ伸ばしたが、VAGO形式でのpolicy品質と長い可変suffixが
+残り、score改善には直結しなかった。
+
+生ログ:
+
+- [Colab 2 T4 / cache前](results/vago-cloud-text-colab-2t4-uncached-10x-20260824.json) —
+  SHA-256 `df1ceb115e07dc57da9111a26d8f148f6a78403db1794fafd271aa19b198e4d7`
+- [Colab 2 T4 / system-prefix cache後](results/vago-cloud-text-colab-2t4-prefix-cache-10x-20260824.json) —
+  SHA-256 `7b7a6dc8389ce004ffc13dd42d25b4dae48afab915593c3e0f5fcf123bbe34a2`

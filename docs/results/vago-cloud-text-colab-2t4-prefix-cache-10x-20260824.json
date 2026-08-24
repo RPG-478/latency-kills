@@ -1,0 +1,6185 @@
+{
+  "runner": "vago-cloud-text-v4-independent-player-clock",
+  "run_id": "vago-text-25206717e361",
+  "backend": "remote",
+  "model": "Llama-3.1-8B-Instruct",
+  "upstream": "C:\\Users\\aiueo\\AppData\\Local\\Temp\\latency-kills-vago-upstream-20260823",
+  "upstream_commit": "b4c3fdfd47cff530f69e8808eae4cc5545671772",
+  "prompt_source": "byte-exact LLMAgent.SYSTEM_PROMPT extracted at runtime",
+  "input_contract": "VAGO Cloud LLMAgent 40x25 brightness ASCII + textual depth 0-9",
+  "scenario_path": "C:\\latency-kills-scenario-20260823\\defend_the_center.cfg",
+  "lanes": 2,
+  "warmup_ms": 202.9999999795109,
+  "warmup": [
+    {
+      "name": "t4-a2568c",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "gpu": "Tesla T4",
+      "quantization": "bitsandbytes NF4, float16 compute",
+      "constrained_digits": false,
+      "prefix_tokens": 199,
+      "parallel_health_wall_ms": 202.9999999795109
+    },
+    {
+      "name": "t4-3f1be9",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "gpu": "Tesla T4",
+      "quantization": "bitsandbytes NF4, float16 compute",
+      "constrained_digits": false,
+      "prefix_tokens": 199,
+      "parallel_health_wall_ms": 202.9999999795109
+    }
+  ],
+  "clock": {
+    "mode": "PLAYER owned by dedicated 35 Hz thread",
+    "tick_hz": 35.0,
+    "observation_tics": 4,
+    "pulse_tics": 4,
+    "maximum_tics": 2100,
+    "inference_advances_world": true,
+    "late_action_behavior": "previous action expires, then neutral",
+    "observation_queue": "drop when every physical/in-flight lane is busy"
+  },
+  "decode": {
+    "contract": "VAGO last-line substring parser with move_forward fallback",
+    "temperature": 0.7,
+    "max_new_tokens": 200,
+    "early_action_execution": false
+  },
+  "episodes": [
+    {
+      "stats": {
+        "seed": 7,
+        "kills": 1,
+        "health": 6.0,
+        "native_tics": 406,
+        "active_wall_seconds": 11.577999999979511,
+        "effective_hz": 35.066505441416346,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 20,
+        "inference_mean_ms": 1017.1303604000059,
+        "inference_p50_ms": 1027.6403950001622,
+        "inference_p95_ms": 1146.9878947493726,
+        "decision_latency_mean_ms": 1168.6999999976251,
+        "decision_latency_p50_ms": 1155.9999999590218,
+        "decision_latency_p95_ms": 1304.0500000177417,
+        "action_age_mean_tics": 40.8235294117647,
+        "action_age_p95_tics": 45.99999999999999,
+        "observation_replacements": 82,
+        "submitted_actions": 20,
+        "applied_actions": 17,
+        "superseded_actions": 1,
+        "neutral_tics": 344,
+        "action_tics": {
+          "neutral": 344,
+          "shoot+move_forward": 37,
+          "shoot+turn_left": 12,
+          "move_forward+turn_right": 13
+        },
+        "selected_actions": {
+          "shoot+move_forward": 10,
+          "shoot+turn_left": 3,
+          "move_forward+turn_right": 4
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 952.0609960000002,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1061.9999999180436,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 941.9784619994971,
+          "decision_latency_ms": 1094.0000000409782,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1023.3500370004549,
+          "decision_latency_ms": 1156.0000000754371,
+          "wire_ms": 1141.0000000614673,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 690,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 12,
+          "obs_game_tick": 44,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1144.1620239993426,
+          "decision_latency_ms": 1297.000000020489,
+          "wire_ms": 1266.0000000614673,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 827,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 22,
+          "obs_game_tick": 84,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1087.6330139999482,
+          "decision_latency_ms": 1219.0000000409782,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 688,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 24,
+          "obs_game_tick": 92,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 912.9112780001378,
+          "decision_latency_ms": 1030.9999999590218,
+          "wire_ms": 1030.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 692,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 33,
+          "obs_game_tick": 128,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1034.5815740001854,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1140.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 34,
+          "obs_game_tick": 132,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 955.4554470005314,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1093.9999999245629,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 44,
+          "obs_game_tick": 172,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1031.9307529998696,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1140.0000000139698,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 45,
+          "obs_game_tick": 176,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1200.6794389999413,
+          "decision_latency_ms": 1437.999999965541,
+          "wire_ms": 1421.9999999040738,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 825,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 55,
+          "obs_game_tick": 216,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1105.4050740003731,
+          "decision_latency_ms": 1233.9999999385327,
+          "wire_ms": 1217.9999999934807,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 685,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 58,
+          "obs_game_tick": 228,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 921.9797300002028,
+          "decision_latency_ms": 1062.000000034459,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 682,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 66,
+          "obs_game_tick": 260,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1037.8592790002585,
+          "decision_latency_ms": 1186.9999999180436,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 680,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 68,
+          "obs_game_tick": 268,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 985.6482610002786,
+          "decision_latency_ms": 1141.0000000614673,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 678,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 77,
+          "obs_game_tick": 304,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1072.2991229995387,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 679,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 78,
+          "obs_game_tick": 308,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 935.8037239999248,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1094.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 741,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 88,
+          "obs_game_tick": 348,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 904.919116000201,
+          "decision_latency_ms": 1092.9999999934807,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 89,
+          "obs_game_tick": 352,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1086.091586999828,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 98,
+          "obs_game_tick": 388,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 903.6766149993127,
+          "decision_latency_ms": 1062.000000034459,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 100,
+          "obs_game_tick": 396,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1104.1816750002909,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 727,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 8,
+        "kills": 1,
+        "health": 8.0,
+        "native_tics": 734,
+        "active_wall_seconds": 20.95400000002701,
+        "effective_hz": 35.02911138680223,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 34,
+        "inference_mean_ms": 1026.357797205786,
+        "inference_p50_ms": 1036.1285449998832,
+        "inference_p95_ms": 1174.6107135999864,
+        "decision_latency_mean_ms": 1183.4705882288022,
+        "decision_latency_p50_ms": 1195.499999972526,
+        "decision_latency_p95_ms": 1349.2499999294523,
+        "action_age_mean_tics": 41.0625,
+        "action_age_p95_tics": 46.45,
+        "observation_replacements": 150,
+        "submitted_actions": 34,
+        "applied_actions": 32,
+        "superseded_actions": 0,
+        "neutral_tics": 608,
+        "action_tics": {
+          "neutral": 608,
+          "shoot": 8,
+          "shoot+move_forward": 58,
+          "shoot+turn_left": 28,
+          "move_forward+turn_left": 20,
+          "move_forward": 12
+        },
+        "selected_actions": {
+          "shoot": 2,
+          "shoot+move_forward": 15,
+          "shoot+turn_left": 7,
+          "move_forward+turn_left": 5,
+          "move_forward": 3
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 678.3189759999004,
+          "decision_latency_ms": 859.9999999860302,
+          "wire_ms": 843.9999999245629,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 667,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1060.5487579996407,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 9,
+          "obs_game_tick": 32,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 922.3240419996728,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 13,
+          "obs_game_tick": 48,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1080.207216999952,
+          "decision_latency_ms": 1359.9999999860302,
+          "wire_ms": 1344.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 696,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 19,
+          "obs_game_tick": 72,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 928.5824970002068,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1061.9999999180436,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 688,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 25,
+          "obs_game_tick": 96,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1087.3370760000398,
+          "decision_latency_ms": 1234.9999999860302,
+          "wire_ms": 1204.0000000270084,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 29,
+          "obs_game_tick": 112,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1046.5230669997254,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 696,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 36,
+          "obs_game_tick": 140,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 893.1711380000706,
+          "decision_latency_ms": 1015.0000000139698,
+          "wire_ms": 1000.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 688,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 40,
+          "obs_game_tick": 156,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 839.7850100000142,
+          "decision_latency_ms": 1015.0000000139698,
+          "wire_ms": 1000.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 696,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 45,
+          "obs_game_tick": 176,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1088.9740339998752,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 686,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 49,
+          "obs_game_tick": 192,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 952.5541919992975,
+          "decision_latency_ms": 1172.000000020489,
+          "wire_ms": 1141.0000000614673,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 697,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 56,
+          "obs_game_tick": 220,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1098.3388980002928,
+          "decision_latency_ms": 1233.9999999385327,
+          "wire_ms": 1217.9999999934807,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 60,
+          "obs_game_tick": 236,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1001.9757869995374,
+          "decision_latency_ms": 1172.000000020489,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 700,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 67,
+          "obs_game_tick": 264,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1162.2443750002276,
+          "decision_latency_ms": 1343.9999999245629,
+          "wire_ms": 1327.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 685,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 71,
+          "obs_game_tick": 280,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 823.9321159999236,
+          "decision_latency_ms": 969.0000000409782,
+          "wire_ms": 954.0000000270084,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 694,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 80,
+          "obs_game_tick": 316,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1017.7353700000822,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 797,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 79,
+          "obs_game_tick": 312,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1209.0431119995628,
+          "decision_latency_ms": 1327.999999979511,
+          "wire_ms": 1312.999999965541,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 679,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 91,
+          "obs_game_tick": 360,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 943.2905289995688,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1108.9999999385327,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 92,
+          "obs_game_tick": 364,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1170.0771579999127,
+          "decision_latency_ms": 1282.0000000065193,
+          "wire_ms": 1282.0000000065193,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 729,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 102,
+          "obs_game_tick": 404,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1002.4627319999126,
+          "decision_latency_ms": 1140.999999945052,
+          "wire_ms": 1140.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 678,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 104,
+          "obs_game_tick": 412,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1117.054986999392,
+          "decision_latency_ms": 1297.000000020489,
+          "wire_ms": 1297.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 681,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 112,
+          "obs_game_tick": 444,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 943.4022690002166,
+          "decision_latency_ms": 1094.0000000409782,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 116,
+          "obs_game_tick": 460,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1098.8744610003778,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1217.9999999934807,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 122,
+          "obs_game_tick": 484,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 950.5698339999071,
+          "decision_latency_ms": 1092.9999999934807,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 698,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 127,
+          "obs_game_tick": 504,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1183.0301740001232,
+          "decision_latency_ms": 1312.999999965541,
+          "wire_ms": 1297.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 720,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 132,
+          "obs_game_tick": 524,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 981.0454389998995,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.000000054948,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 754,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 139,
+          "obs_game_tick": 552,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1145.0699739998527,
+          "decision_latency_ms": 1312.999999965541,
+          "wire_ms": 1297.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 741,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 142,
+          "obs_game_tick": 564,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1025.734023000041,
+          "decision_latency_ms": 1219.0000000409782,
+          "wire_ms": 1188.0000000819564,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 739,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 151,
+          "obs_game_tick": 600,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1145.8211359995403,
+          "decision_latency_ms": 1282.0000000065193,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 754,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 153,
+          "obs_game_tick": 608,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1068.9072159993884,
+          "decision_latency_ms": 1219.0000000409782,
+          "wire_ms": 1203.0000000959262,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 734,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 163,
+          "obs_game_tick": 648,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 1006.4293189998352,
+          "decision_latency_ms": 1141.0000000614673,
+          "wire_ms": 1125.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 766,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 164,
+          "obs_game_tick": 652,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 977.9201230003309,
+          "decision_latency_ms": 1108.9999999385327,
+          "wire_ms": 1092.9999999934807,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 739,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 173,
+          "obs_game_tick": 688,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1161.1873830006516,
+          "decision_latency_ms": 1358.9999999385327,
+          "wire_ms": 1327.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 794,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 174,
+          "obs_game_tick": 692,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1083.6926829997537,
+          "decision_latency_ms": 1234.000000054948,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 787,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 9,
+        "kills": 1,
+        "health": 14.0,
+        "native_tics": 470,
+        "active_wall_seconds": 13.405999999959022,
+        "effective_hz": 35.05892883794097,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 22,
+        "inference_mean_ms": 1023.9461778636806,
+        "inference_p50_ms": 972.0008790000065,
+        "inference_p95_ms": 1297.1081068499188,
+        "decision_latency_mean_ms": 1181.227272725664,
+        "decision_latency_p50_ms": 1132.999999972526,
+        "decision_latency_p95_ms": 1418.850000022212,
+        "action_age_mean_tics": 41.476190476190474,
+        "action_age_p95_tics": 50.0,
+        "observation_replacements": 96,
+        "submitted_actions": 22,
+        "applied_actions": 21,
+        "superseded_actions": 0,
+        "neutral_tics": 394,
+        "action_tics": {
+          "neutral": 394,
+          "shoot+move_forward": 32,
+          "move_forward+turn_left": 12,
+          "move_forward": 12,
+          "shoot+turn_left": 12,
+          "shoot": 4,
+          "shoot+move_forward+turn_left": 4
+        },
+        "selected_actions": {
+          "shoot+move_forward": 10,
+          "move_forward+turn_left": 3,
+          "move_forward": 3,
+          "shoot+turn_left": 3,
+          "shoot": 1,
+          "shoot+move_forward+turn_left": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1009.7334840002077,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1125.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 928.7915489994703,
+          "decision_latency_ms": 1079.0000000270084,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 12,
+          "obs_game_tick": 44,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 949.2355689999386,
+          "decision_latency_ms": 1172.000000020489,
+          "wire_ms": 1140.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 691,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1203.458300999955,
+          "decision_latency_ms": 1312.999999965541,
+          "wire_ms": 1297.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 23,
+          "obs_game_tick": 88,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 816.7621330003385,
+          "decision_latency_ms": 1015.999999945052,
+          "wire_ms": 1015.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 688,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 24,
+          "obs_game_tick": 92,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1302.037043999917,
+          "decision_latency_ms": 1422.000000020489,
+          "wire_ms": 1406.0000000754371,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 820,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 32,
+          "obs_game_tick": 124,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 932.3232980004832,
+          "decision_latency_ms": 1092.9999999934807,
+          "wire_ms": 1061.9999999180436,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 688,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 37,
+          "obs_game_tick": 144,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1088.8700380000955,
+          "decision_latency_ms": 1359.000000054948,
+          "wire_ms": 1344.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 42,
+          "obs_game_tick": 164,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 938.3014710001589,
+          "decision_latency_ms": 1093.9999999245629,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 49,
+          "obs_game_tick": 192,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1083.0522460000793,
+          "decision_latency_ms": 1204.0000000270084,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 685,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 52,
+          "obs_game_tick": 204,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1009.9453719994926,
+          "decision_latency_ms": 1170.9999999729916,
+          "wire_ms": 1155.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 689,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 60,
+          "obs_game_tick": 236,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1075.678182000047,
+          "decision_latency_ms": 1204.0000000270084,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 684,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 62,
+          "obs_game_tick": 244,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 953.2881960003579,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1108.9999999385327,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 814,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 71,
+          "obs_game_tick": 280,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 942.4273880003966,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1108.9999999385327,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 683,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 73,
+          "obs_game_tick": 288,
+          "action": "shoot+move_forward+turn_left",
+          "buttons": [
+            1,
+            1,
+            1,
+            0
+          ],
+          "completion": "shoot+turn_left+move_forward",
+          "inference_ms": 1462.1161029999712,
+          "decision_latency_ms": 1641.0000000614673,
+          "wire_ms": 1625.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 806,
+          "completion_tokens": 8,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 81,
+          "obs_game_tick": 320,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1070.3791559999445,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 684,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 88,
+          "obs_game_tick": 348,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 934.8514470002556,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 681,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 92,
+          "obs_game_tick": 364,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1084.989607999887,
+          "decision_latency_ms": 1312.000000034459,
+          "wire_ms": 1280.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 691,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 98,
+          "obs_game_tick": 388,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 990.7135619996552,
+          "decision_latency_ms": 1140.999999945052,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 681,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 104,
+          "obs_game_tick": 412,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 933.8998570001422,
+          "decision_latency_ms": 1047.000000020489,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 109,
+          "obs_game_tick": 432,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 919.6366810001564,
+          "decision_latency_ms": 1047.000000020489,
+          "wire_ms": 1032.0000000065193,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 113,
+          "obs_game_tick": 448,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 896.3252280000233,
+          "decision_latency_ms": 1030.9999999590218,
+          "wire_ms": 1000.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 678,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 10,
+        "kills": 1,
+        "health": 2.0,
+        "native_tics": 696,
+        "active_wall_seconds": 19.875,
+        "effective_hz": 35.0188679245283,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 33,
+        "inference_mean_ms": 1045.9660480908938,
+        "inference_p50_ms": 1063.9555729994754,
+        "inference_p95_ms": 1215.2713343994037,
+        "decision_latency_mean_ms": 1191.6363636264578,
+        "decision_latency_p50_ms": 1187.999999965541,
+        "decision_latency_p95_ms": 1343.2000000262633,
+        "action_age_mean_tics": 41.4,
+        "action_age_p95_tics": 46.0,
+        "observation_replacements": 141,
+        "submitted_actions": 33,
+        "applied_actions": 30,
+        "superseded_actions": 1,
+        "neutral_tics": 576,
+        "action_tics": {
+          "neutral": 576,
+          "shoot+move_forward": 64,
+          "move_forward+turn_right": 16,
+          "move_forward+turn_left": 12,
+          "shoot+turn_left": 16,
+          "shoot+turn_right": 8,
+          "move_forward": 4
+        },
+        "selected_actions": {
+          "shoot+move_forward": 16,
+          "move_forward+turn_right": 4,
+          "move_forward+turn_left": 3,
+          "shoot+turn_left": 4,
+          "shoot+turn_right": 2,
+          "move_forward": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 869.7317329997531,
+          "decision_latency_ms": 1015.999999945052,
+          "wire_ms": 1000.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1175.20887199953,
+          "decision_latency_ms": 1312.000000034459,
+          "wire_ms": 1280.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 10,
+          "obs_game_tick": 36,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 992.1699870001248,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 14,
+          "obs_game_tick": 52,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1074.6639070002857,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1186.9999999180436,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 695,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 20,
+          "obs_game_tick": 76,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 992.4645119999695,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 25,
+          "obs_game_tick": 96,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1071.6452480000953,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1171.9999999040738,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 31,
+          "obs_game_tick": 120,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 935.4187700000693,
+          "decision_latency_ms": 1094.0000000409782,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 36,
+          "obs_game_tick": 140,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1063.9555729994754,
+          "decision_latency_ms": 1186.9999999180436,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 41,
+          "obs_game_tick": 160,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 937.915514999986,
+          "decision_latency_ms": 1079.0000000270084,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 47,
+          "obs_game_tick": 184,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1068.9379819996248,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1187.000000034459,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 683,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 51,
+          "obs_game_tick": 200,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1052.2690050001984,
+          "decision_latency_ms": 1218.9999999245629,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 692,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 58,
+          "obs_game_tick": 228,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1074.100983999415,
+          "decision_latency_ms": 1186.9999999180436,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 679,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 62,
+          "obs_game_tick": 244,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "turn_left+move_forward",
+          "inference_ms": 1048.6056019999523,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 689,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 69,
+          "obs_game_tick": 272,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1066.2987499999872,
+          "decision_latency_ms": 1295.9999999729916,
+          "wire_ms": 1280.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 678,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 73,
+          "obs_game_tick": 288,
+          "action": "shoot+turn_right",
+          "buttons": [
+            1,
+            0,
+            0,
+            1
+          ],
+          "completion": "turn_right+shoot",
+          "inference_ms": 939.5453380002436,
+          "decision_latency_ms": 1092.9999999934807,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 690,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 81,
+          "obs_game_tick": 320,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1067.3305340005754,
+          "decision_latency_ms": 1186.9999999180436,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 679,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 83,
+          "obs_game_tick": 328,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 967.9302450003888,
+          "decision_latency_ms": 1109.000000054948,
+          "wire_ms": 1094.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 728,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 92,
+          "obs_game_tick": 364,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1096.6852640003708,
+          "decision_latency_ms": 1234.9999999860302,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 93,
+          "obs_game_tick": 368,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 979.2645699999412,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.9999999860302,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 718,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 104,
+          "obs_game_tick": 412,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 915.1785169997311,
+          "decision_latency_ms": 1045.9999999729916,
+          "wire_ms": 1030.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 103,
+          "obs_game_tick": 408,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1174.8665499999333,
+          "decision_latency_ms": 1297.000000020489,
+          "wire_ms": 1265.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 114,
+          "obs_game_tick": 452,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 985.3735959995902,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 676,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 115,
+          "obs_game_tick": 456,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1108.5713550000946,
+          "decision_latency_ms": 1234.000000054948,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 700,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 124,
+          "obs_game_tick": 492,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 810.774906000006,
+          "decision_latency_ms": 969.0000000409782,
+          "wire_ms": 938.0000000819564,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 708,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 126,
+          "obs_game_tick": 500,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1091.8977869996525,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 710,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 133,
+          "obs_game_tick": 528,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1144.2256670006827,
+          "decision_latency_ms": 1282.0000000065193,
+          "wire_ms": 1265.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 864,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 138,
+          "obs_game_tick": 548,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1147.4395840004945,
+          "decision_latency_ms": 1280.9999999590218,
+          "wire_ms": 1265.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 781,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 145,
+          "obs_game_tick": 576,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 959.0619999999035,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 736,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 150,
+          "obs_game_tick": 596,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1115.9458359998098,
+          "decision_latency_ms": 1234.000000054948,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 765,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 155,
+          "obs_game_tick": 616,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 997.2312170002624,
+          "decision_latency_ms": 1187.000000034459,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 794,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 161,
+          "obs_game_tick": 640,
+          "action": "shoot+turn_right",
+          "buttons": [
+            1,
+            0,
+            0,
+            1
+          ],
+          "completion": "turn_right+shoot",
+          "inference_ms": 1277.584721000494,
+          "decision_latency_ms": 1390.999999945052,
+          "wire_ms": 1375.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 844,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 166,
+          "obs_game_tick": 660,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1039.220431999638,
+          "decision_latency_ms": 1217.9999999934807,
+          "wire_ms": 1186.9999999180436,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 792,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 174,
+          "obs_game_tick": 692,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1275.3650279992144,
+          "decision_latency_ms": 1390.0000000139698,
+          "wire_ms": 1375.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 819,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 11,
+        "kills": 1,
+        "health": 36.0,
+        "native_tics": 714,
+        "active_wall_seconds": 20.390999999945052,
+        "effective_hz": 35.015447991855424,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 33,
+        "inference_mean_ms": 1056.1141676969396,
+        "inference_p50_ms": 1059.5391950000703,
+        "inference_p95_ms": 1273.2371870000861,
+        "decision_latency_mean_ms": 1208.242424227523,
+        "decision_latency_p50_ms": 1187.999999965541,
+        "decision_latency_p95_ms": 1427.3999999510124,
+        "action_age_mean_tics": 41.689655172413794,
+        "action_age_p95_tics": 49.2,
+        "observation_replacements": 146,
+        "submitted_actions": 33,
+        "applied_actions": 29,
+        "superseded_actions": 2,
+        "neutral_tics": 604,
+        "action_tics": {
+          "neutral": 604,
+          "shoot+turn_left": 12,
+          "move_forward+turn_right": 12,
+          "shoot+move_forward": 58,
+          "move_forward+turn_left": 20,
+          "shoot": 4,
+          "move_forward": 4
+        },
+        "selected_actions": {
+          "shoot+turn_left": 3,
+          "move_forward+turn_right": 3,
+          "shoot+move_forward": 16,
+          "move_forward+turn_left": 5,
+          "shoot": 1,
+          "move_forward": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 862.488258000667,
+          "decision_latency_ms": 1030.9999999590218,
+          "wire_ms": 1015.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1125.270976000138,
+          "decision_latency_ms": 1296.9999999040738,
+          "wire_ms": 1265.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 937.3791420002817,
+          "decision_latency_ms": 1078.0000000959262,
+          "wire_ms": 1063.0000000819564,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 14,
+          "obs_game_tick": 52,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1130.8403450002515,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 698,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 21,
+          "obs_game_tick": 80,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 923.6900629994125,
+          "decision_latency_ms": 1079.0000000270084,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 693,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 26,
+          "obs_game_tick": 100,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1119.810242999847,
+          "decision_latency_ms": 1234.9999999860302,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 690,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 31,
+          "obs_game_tick": 120,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 936.2048559996765,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.000000054948,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 37,
+          "obs_game_tick": 144,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1268.9190430000963,
+          "decision_latency_ms": 1420.9999999729916,
+          "wire_ms": 1405.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 686,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 41,
+          "obs_game_tick": 160,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 929.1843150003842,
+          "decision_latency_ms": 1108.9999999385327,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 699,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 50,
+          "obs_game_tick": 196,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 868.1653630001165,
+          "decision_latency_ms": 1030.9999999590218,
+          "wire_ms": 1015.0000000139698,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 683,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 51,
+          "obs_game_tick": 200,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 977.9469589993823,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.9999999860302,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 682,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 60,
+          "obs_game_tick": 236,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 933.5505279996141,
+          "decision_latency_ms": 1093.9999999245629,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 678,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 61,
+          "obs_game_tick": 240,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "turn_left+move_forward",
+          "inference_ms": 1031.7439769996781,
+          "decision_latency_ms": 1171.9999999040738,
+          "wire_ms": 1155.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 763,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 70,
+          "obs_game_tick": 276,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1063.7740009997287,
+          "decision_latency_ms": 1187.000000034459,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 72,
+          "obs_game_tick": 284,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 913.7477889998991,
+          "decision_latency_ms": 1045.9999999729916,
+          "wire_ms": 1030.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 81,
+          "obs_game_tick": 320,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1130.8144190006715,
+          "decision_latency_ms": 1297.000000020489,
+          "wire_ms": 1282.0000000065193,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 82,
+          "obs_game_tick": 324,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1054.9860909995914,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 720,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 93,
+          "obs_game_tick": 368,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1061.639113999263,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 680,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 94,
+          "obs_game_tick": 372,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 978.3287029995336,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.9999999860302,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 681,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 104,
+          "obs_game_tick": 412,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1059.5391950000703,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.000000054948,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 105,
+          "obs_game_tick": 416,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 925.3600420006478,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 704,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 116,
+          "obs_game_tick": 460,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 933.8558959998409,
+          "decision_latency_ms": 1079.0000000270084,
+          "wire_ms": 1079.0000000270084,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 707,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 115,
+          "obs_game_tick": 456,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1061.1588280007709,
+          "decision_latency_ms": 1265.0000000139698,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 126,
+          "obs_game_tick": 500,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 937.6430270003766,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 723,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 127,
+          "obs_game_tick": 504,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1239.5096899999771,
+          "decision_latency_ms": 1375.0,
+          "wire_ms": 1359.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 715,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 136,
+          "obs_game_tick": 540,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1141.930634000346,
+          "decision_latency_ms": 1281.0000000754371,
+          "wire_ms": 1266.0000000614673,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 871,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 140,
+          "obs_game_tick": 556,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1317.724171000009,
+          "decision_latency_ms": 1437.000000034459,
+          "wire_ms": 1422.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 812,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 148,
+          "obs_game_tick": 588,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1123.0374400001892,
+          "decision_latency_ms": 1266.0000000614673,
+          "wire_ms": 1250.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 812,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 153,
+          "obs_game_tick": 608,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1218.9788249997946,
+          "decision_latency_ms": 1358.9999999385327,
+          "wire_ms": 1342.9999999934807,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 741,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 160,
+          "obs_game_tick": 636,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 963.8456249995215,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1108.9999999385327,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 761,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 165,
+          "obs_game_tick": 656,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "turn_left+move_forward",
+          "inference_ms": 1190.9492879995014,
+          "decision_latency_ms": 1311.9999999180436,
+          "wire_ms": 1295.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 782,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 170,
+          "obs_game_tick": 676,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1210.03628499966,
+          "decision_latency_ms": 1358.9999999385327,
+          "wire_ms": 1327.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 835,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 177,
+          "obs_game_tick": 704,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1279.714403000071,
+          "decision_latency_ms": 1436.9999999180436,
+          "wire_ms": 1405.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 813,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 12,
+        "kills": 1,
+        "health": 2.0,
+        "native_tics": 770,
+        "active_wall_seconds": 22.109000000054948,
+        "effective_hz": 34.8274458364506,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 36,
+        "inference_mean_ms": 1053.1806067221069,
+        "inference_p50_ms": 1065.9795474998646,
+        "inference_p95_ms": 1190.6809247500405,
+        "decision_latency_mean_ms": 1202.1388888889405,
+        "decision_latency_p50_ms": 1202.999999979511,
+        "decision_latency_p95_ms": 1331.7499999830034,
+        "action_age_mean_tics": 41.794117647058826,
+        "action_age_p95_tics": 46.35,
+        "observation_replacements": 157,
+        "submitted_actions": 36,
+        "applied_actions": 34,
+        "superseded_actions": 0,
+        "neutral_tics": 645,
+        "action_tics": {
+          "neutral": 645,
+          "shoot": 1,
+          "move_forward+turn_right": 8,
+          "shoot+move_forward": 56,
+          "shoot+turn_left": 37,
+          "move_forward": 4,
+          "move_forward+turn_left": 15,
+          "shoot+turn_right": 4
+        },
+        "selected_actions": {
+          "shoot": 1,
+          "move_forward+turn_right": 2,
+          "shoot+move_forward": 15,
+          "shoot+turn_left": 10,
+          "move_forward": 1,
+          "move_forward+turn_left": 4,
+          "shoot+turn_right": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 866.2655569996787,
+          "decision_latency_ms": 1000.0,
+          "wire_ms": 983.9999999385327,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 996.6826099998798,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 667,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1063.4917289999066,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 690,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 12,
+          "obs_game_tick": 44,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1185.4452540001148,
+          "decision_latency_ms": 1342.9999999934807,
+          "wire_ms": 1327.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 825,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 22,
+          "obs_game_tick": 84,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 939.6020519998274,
+          "decision_latency_ms": 1062.999999965541,
+          "wire_ms": 1046.9999999040738,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 24,
+          "obs_game_tick": 92,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "shoot+turn_left",
+          "inference_ms": 1120.7692909993057,
+          "decision_latency_ms": 1280.9999999590218,
+          "wire_ms": 1265.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 830,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 32,
+          "obs_game_tick": 124,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1076.54644700051,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 694,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 36,
+          "obs_game_tick": 140,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 989.7216449999178,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1108.9999999385327,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 688,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 43,
+          "obs_game_tick": 168,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1068.4673659998225,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 691,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 47,
+          "obs_game_tick": 184,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 941.5798419995554,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 726,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 54,
+          "obs_game_tick": 212,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1206.3879369998176,
+          "decision_latency_ms": 1327.999999979511,
+          "wire_ms": 1312.999999965541,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 750,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 58,
+          "obs_game_tick": 228,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 930.8347799997136,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1061.9999999180436,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 697,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 66,
+          "obs_game_tick": 260,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1123.5141560000557,
+          "decision_latency_ms": 1296.9999999040738,
+          "wire_ms": 1265.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 68,
+          "obs_game_tick": 268,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 925.1577799996085,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 691,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 78,
+          "obs_game_tick": 308,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1080.3677750000134,
+          "decision_latency_ms": 1217.9999999934807,
+          "wire_ms": 1187.000000034459,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 704,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 79,
+          "obs_game_tick": 312,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1154.8147619996598,
+          "decision_latency_ms": 1327.999999979511,
+          "wire_ms": 1311.9999999180436,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 838,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 89,
+          "obs_game_tick": 352,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1133.1613800002742,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 685,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 91,
+          "obs_game_tick": 360,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 994.8161719994459,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 798,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 100,
+          "obs_game_tick": 396,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1062.806680999529,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 681,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 102,
+          "obs_game_tick": 404,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 935.1035090003279,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 680,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 111,
+          "obs_game_tick": 440,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1121.3237809997736,
+          "decision_latency_ms": 1265.0000000139698,
+          "wire_ms": 1234.000000054948,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 680,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 112,
+          "obs_game_tick": 444,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1035.3831249994982,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 742,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 123,
+          "obs_game_tick": 488,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 967.6023079991865,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 122,
+          "obs_game_tick": 484,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1128.2214579996435,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 675,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 133,
+          "obs_game_tick": 528,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1037.675804999708,
+          "decision_latency_ms": 1204.0000000270084,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 688,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 134,
+          "obs_game_tick": 532,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1085.8256210003674,
+          "decision_latency_ms": 1234.000000054948,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 720,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 144,
+          "obs_game_tick": 572,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 931.2009309996938,
+          "decision_latency_ms": 1062.000000034459,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 705,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 145,
+          "obs_game_tick": 576,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1079.5626159997482,
+          "decision_latency_ms": 1266.0000000614673,
+          "wire_ms": 1234.000000054948,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 699,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 153,
+          "obs_game_tick": 608,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 962.2435080000287,
+          "decision_latency_ms": 1170.9999999729916,
+          "wire_ms": 1155.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 745,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 157,
+          "obs_game_tick": 624,
+          "action": "shoot+turn_right",
+          "buttons": [
+            1,
+            0,
+            0,
+            1
+          ],
+          "completion": "turn_right+shoot",
+          "inference_ms": 1107.6943950001805,
+          "decision_latency_ms": 1234.000000054948,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 744,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 164,
+          "obs_game_tick": 652,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 954.3871640007637,
+          "decision_latency_ms": 1109.000000054948,
+          "wire_ms": 1094.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 736,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 168,
+          "obs_game_tick": 668,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1153.2125250005265,
+          "decision_latency_ms": 1281.0000000754371,
+          "wire_ms": 1266.0000000614673,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 763,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 174,
+          "obs_game_tick": 692,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1111.3972270004524,
+          "decision_latency_ms": 1280.9999999590218,
+          "wire_ms": 1265.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 804,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 179,
+          "obs_game_tick": 712,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1309.9604199996975,
+          "decision_latency_ms": 1438.0000000819564,
+          "wire_ms": 1438.0000000819564,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 803,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 186,
+          "obs_game_tick": 740,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1021.9436119996317,
+          "decision_latency_ms": 1157.0000000065193,
+          "wire_ms": 1140.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 743,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 192,
+          "obs_game_tick": 764,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1111.3306209999791,
+          "decision_latency_ms": 1219.0000000409782,
+          "wire_ms": 1203.0000000959262,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 750,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 13,
+        "kills": 1,
+        "health": 24.0,
+        "native_tics": 638,
+        "active_wall_seconds": 18.218999999924563,
+        "effective_hz": 35.018387397916555,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 30,
+        "inference_mean_ms": 1055.233295800008,
+        "inference_p50_ms": 1048.8708044995292,
+        "inference_p95_ms": 1324.9846394501674,
+        "decision_latency_mean_ms": 1206.1333333413738,
+        "decision_latency_p50_ms": 1179.0000000037253,
+        "decision_latency_p95_ms": 1477.7999999583699,
+        "action_age_mean_tics": 42.03703703703704,
+        "action_age_p95_tics": 51.7,
+        "observation_replacements": 130,
+        "submitted_actions": 30,
+        "applied_actions": 27,
+        "superseded_actions": 1,
+        "neutral_tics": 532,
+        "action_tics": {
+          "neutral": 532,
+          "shoot+move_forward": 76,
+          "move_forward+turn_left": 10,
+          "move_forward": 8,
+          "shoot+turn_right": 4,
+          "shoot+turn_left": 4,
+          "shoot+move_forward+turn_left": 4
+        },
+        "selected_actions": {
+          "shoot+move_forward": 19,
+          "move_forward+turn_left": 3,
+          "move_forward": 2,
+          "shoot+turn_right": 1,
+          "shoot+turn_left": 1,
+          "shoot+move_forward+turn_left": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 883.2336499999656,
+          "decision_latency_ms": 1030.9999999590218,
+          "wire_ms": 1015.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1059.042486999715,
+          "decision_latency_ms": 1187.000000034459,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 915.4604589994051,
+          "decision_latency_ms": 1062.000000034459,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 13,
+          "obs_game_tick": 48,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1352.80870600036,
+          "decision_latency_ms": 1484.9999999860302,
+          "wire_ms": 1468.9999999245629,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 811,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 21,
+          "obs_game_tick": 80,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 825.2729579999141,
+          "decision_latency_ms": 984.000000054948,
+          "wire_ms": 953.0000000959262,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 689,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 26,
+          "obs_game_tick": 100,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1133.4098790002827,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 687,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 30,
+          "obs_game_tick": 116,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 996.5941880000173,
+          "decision_latency_ms": 1141.0000000614673,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 686,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 37,
+          "obs_game_tick": 144,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1069.973194999875,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1186.9999999180436,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 688,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 41,
+          "obs_game_tick": 160,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 965.5499829996188,
+          "decision_latency_ms": 1109.000000054948,
+          "wire_ms": 1094.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 686,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 48,
+          "obs_game_tick": 188,
+          "action": "move_forward",
+          "buttons": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward",
+          "inference_ms": 941.9240630004424,
+          "decision_latency_ms": 1092.9999999934807,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 686,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 51,
+          "obs_game_tick": 200,
+          "action": "shoot+turn_right",
+          "buttons": [
+            1,
+            0,
+            0,
+            1
+          ],
+          "completion": "turn_right+shoot",
+          "inference_ms": 934.4830840000213,
+          "decision_latency_ms": 1109.000000054948,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 58,
+          "obs_game_tick": 228,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1061.8308699995396,
+          "decision_latency_ms": 1170.9999999729916,
+          "wire_ms": 1155.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 61,
+          "obs_game_tick": 240,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 921.0390319994985,
+          "decision_latency_ms": 1109.000000054948,
+          "wire_ms": 1094.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 69,
+          "obs_game_tick": 272,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1184.9550020006063,
+          "decision_latency_ms": 1311.9999999180436,
+          "wire_ms": 1295.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 675,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 71,
+          "obs_game_tick": 280,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 971.8292480001764,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1093.9999999245629,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 761,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 81,
+          "obs_game_tick": 320,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1102.6187580000624,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1234.000000054948,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 82,
+          "obs_game_tick": 324,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 961.4877470003194,
+          "decision_latency_ms": 1141.0000000614673,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 722,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 92,
+          "obs_game_tick": 364,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 939.6649000000252,
+          "decision_latency_ms": 1092.9999999934807,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 93,
+          "obs_game_tick": 368,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1075.981466000485,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 698,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 102,
+          "obs_game_tick": 404,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 915.79032700065,
+          "decision_latency_ms": 1094.0000000409782,
+          "wire_ms": 1078.0000000959262,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 678,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 104,
+          "obs_game_tick": 412,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1081.7071359997499,
+          "decision_latency_ms": 1218.9999999245629,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 712,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 112,
+          "obs_game_tick": 444,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1128.8756490002925,
+          "decision_latency_ms": 1281.0000000754371,
+          "wire_ms": 1266.0000000614673,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 801,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 115,
+          "obs_game_tick": 456,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1290.977446999932,
+          "decision_latency_ms": 1437.000000034459,
+          "wire_ms": 1437.000000034459,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 861,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 124,
+          "obs_game_tick": 492,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 954.8083700001371,
+          "decision_latency_ms": 1140.999999945052,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 732,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 128,
+          "obs_game_tick": 508,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1110.2401729995108,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 742,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 135,
+          "obs_game_tick": 536,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1038.6991219993433,
+          "decision_latency_ms": 1188.0000000819564,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 793,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 139,
+          "obs_game_tick": 552,
+          "action": "shoot+move_forward+turn_left",
+          "buttons": [
+            1,
+            1,
+            1,
+            0
+          ],
+          "completion": "turn_left+move_forward+shoot",
+          "inference_ms": 1489.2469400001573,
+          "decision_latency_ms": 1625.0,
+          "wire_ms": 1594.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 820,
+          "completion_tokens": 8,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 146,
+          "obs_game_tick": 580,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1206.3889900000504,
+          "decision_latency_ms": 1468.9999999245629,
+          "wire_ms": 1452.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 829,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 154,
+          "obs_game_tick": 612,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1141.5277719997903,
+          "decision_latency_ms": 1281.0000000754371,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 796,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 160,
+          "obs_game_tick": 636,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1001.5772730002936,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1140.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 795,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 14,
+        "kills": 1,
+        "health": 24.0,
+        "native_tics": 522,
+        "active_wall_seconds": 14.891000000061467,
+        "effective_hz": 35.054731045453316,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 24,
+        "inference_mean_ms": 1052.1159022083566,
+        "inference_p50_ms": 1069.0398390001974,
+        "inference_p95_ms": 1170.5480791499667,
+        "decision_latency_mean_ms": 1205.2499999893673,
+        "decision_latency_p50_ms": 1202.999999979511,
+        "decision_latency_p95_ms": 1355.349999992177,
+        "action_age_mean_tics": 41.90909090909091,
+        "action_age_p95_tics": 46.949999999999996,
+        "observation_replacements": 107,
+        "submitted_actions": 24,
+        "applied_actions": 22,
+        "superseded_actions": 0,
+        "neutral_tics": 437,
+        "action_tics": {
+          "neutral": 437,
+          "shoot+move_forward": 53,
+          "shoot+turn_left": 16,
+          "move_forward+turn_left": 8,
+          "shoot": 4,
+          "move_forward+turn_right": 4
+        },
+        "selected_actions": {
+          "shoot+move_forward": 14,
+          "shoot+turn_left": 4,
+          "move_forward+turn_left": 2,
+          "shoot": 1,
+          "move_forward+turn_right": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 977.6996770006008,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1093.9999999245629,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 929.5301480005946,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1094.0000000409782,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1100.334587999896,
+          "decision_latency_ms": 1234.9999999860302,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 12,
+          "obs_game_tick": 44,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1188.7529879995782,
+          "decision_latency_ms": 1359.9999999860302,
+          "wire_ms": 1343.9999999245629,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 815,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 22,
+          "obs_game_tick": 84,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1101.0527489997912,
+          "decision_latency_ms": 1218.9999999245629,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 690,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 24,
+          "obs_game_tick": 92,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1126.4110649999566,
+          "decision_latency_ms": 1265.0000000139698,
+          "wire_ms": 1265.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 814,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 33,
+          "obs_game_tick": 128,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1067.0717230004811,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 35,
+          "obs_game_tick": 136,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1170.5068379997101,
+          "decision_latency_ms": 1329.0000000270084,
+          "wire_ms": 1312.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 837,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 44,
+          "obs_game_tick": 172,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1074.263288000111,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 697,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 47,
+          "obs_game_tick": 184,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 995.6090859996038,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1140.0000000139698,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 695,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 55,
+          "obs_game_tick": 216,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 868.2405050003581,
+          "decision_latency_ms": 1031.0000000754371,
+          "wire_ms": 1000.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 690,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 58,
+          "obs_game_tick": 228,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 947.1105000002353,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1093.9999999245629,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 698,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 65,
+          "obs_game_tick": 256,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1071.0079549999136,
+          "decision_latency_ms": 1282.0000000065193,
+          "wire_ms": 1265.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 694,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 68,
+          "obs_game_tick": 268,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1023.0790550003803,
+          "decision_latency_ms": 1172.000000020489,
+          "wire_ms": 1157.0000000065193,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 701,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 77,
+          "obs_game_tick": 304,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1089.1681980001522,
+          "decision_latency_ms": 1218.9999999245629,
+          "wire_ms": 1187.999999965541,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 713,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 79,
+          "obs_game_tick": 312,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1055.6946769993374,
+          "decision_latency_ms": 1187.000000034459,
+          "wire_ms": 1172.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 765,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 88,
+          "obs_game_tick": 348,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1074.7257510001873,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 675,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 90,
+          "obs_game_tick": 356,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "turn_right+move_forward",
+          "inference_ms": 1170.555357000012,
+          "decision_latency_ms": 1327.999999979511,
+          "wire_ms": 1296.9999999040738,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 704,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 99,
+          "obs_game_tick": 392,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1063.5106190002261,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1186.9999999180436,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 678,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 102,
+          "obs_game_tick": 404,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 939.3829639993783,
+          "decision_latency_ms": 1062.999999965541,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 695,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 110,
+          "obs_game_tick": 436,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1143.8345870001285,
+          "decision_latency_ms": 1265.0000000139698,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 796,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 112,
+          "obs_game_tick": 444,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 952.9496380000637,
+          "decision_latency_ms": 1109.9999999860302,
+          "wire_ms": 1093.9999999245629,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 718,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 122,
+          "obs_game_tick": 484,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 1075.6067729998904,
+          "decision_latency_ms": 1375.0,
+          "wire_ms": 1359.000000054948,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 843,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 123,
+          "obs_game_tick": 488,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1044.6829239999715,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1171.9999999040738,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 729,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 15,
+        "kills": 1,
+        "health": 10.0,
+        "native_tics": 680,
+        "active_wall_seconds": 19.405999999959022,
+        "effective_hz": 35.04070905912789,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 32,
+        "inference_mean_ms": 1043.9211395936923,
+        "inference_p50_ms": 1067.8402400003506,
+        "inference_p95_ms": 1227.1644070001457,
+        "decision_latency_mean_ms": 1205.0312500068685,
+        "decision_latency_p50_ms": 1218.5000000172295,
+        "decision_latency_p95_ms": 1391.0000000614673,
+        "action_age_mean_tics": 42.166666666666664,
+        "action_age_p95_tics": 49.0,
+        "observation_replacements": 138,
+        "submitted_actions": 32,
+        "applied_actions": 30,
+        "superseded_actions": 0,
+        "neutral_tics": 562,
+        "action_tics": {
+          "neutral": 562,
+          "shoot+move_forward": 54,
+          "shoot+turn_left": 24,
+          "move_forward+turn_right": 8,
+          "shoot+turn_right": 4,
+          "move_forward+turn_left": 24,
+          "shoot": 4
+        },
+        "selected_actions": {
+          "shoot+move_forward": 14,
+          "shoot+turn_left": 6,
+          "move_forward+turn_right": 2,
+          "shoot+turn_right": 1,
+          "move_forward+turn_left": 6,
+          "shoot": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 876.0028119995695,
+          "decision_latency_ms": 1030.9999999590218,
+          "wire_ms": 1015.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1134.7024719998444,
+          "decision_latency_ms": 1250.0,
+          "wire_ms": 1233.9999999385327,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 917.538605000118,
+          "decision_latency_ms": 1062.000000034459,
+          "wire_ms": 1031.0000000754371,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 690,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 13,
+          "obs_game_tick": 48,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1070.4740050005057,
+          "decision_latency_ms": 1266.0000000614673,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 693,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 21,
+          "obs_game_tick": 80,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 919.8071990003882,
+          "decision_latency_ms": 1078.0000000959262,
+          "wire_ms": 1063.0000000819564,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 688,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 24,
+          "obs_game_tick": 92,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1077.9378360002738,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1187.000000034459,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 691,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 31,
+          "obs_game_tick": 120,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 920.7281689996307,
+          "decision_latency_ms": 1140.0000000139698,
+          "wire_ms": 1125.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 687,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 35,
+          "obs_game_tick": 136,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1130.7755969992286,
+          "decision_latency_ms": 1280.9999999590218,
+          "wire_ms": 1265.0000000139698,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 696,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 42,
+          "obs_game_tick": 164,
+          "action": "shoot+turn_right",
+          "buttons": [
+            1,
+            0,
+            0,
+            1
+          ],
+          "completion": "turn_right+shoot",
+          "inference_ms": 935.5245369997647,
+          "decision_latency_ms": 1062.999999965541,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 685,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 47,
+          "obs_game_tick": 184,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1065.2064750001955,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 685,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 52,
+          "obs_game_tick": 204,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 990.0809880000452,
+          "decision_latency_ms": 1187.999999965541,
+          "wire_ms": 1157.0000000065193,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 684,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 58,
+          "obs_game_tick": 228,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1073.9416819997132,
+          "decision_latency_ms": 1297.000000020489,
+          "wire_ms": 1282.0000000065193,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 683,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 63,
+          "obs_game_tick": 248,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 979.7915760000251,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.000000054948,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 682,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 70,
+          "obs_game_tick": 276,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1127.1260439998514,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 680,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 74,
+          "obs_game_tick": 292,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1011.4566199999899,
+          "decision_latency_ms": 1186.9999999180436,
+          "wire_ms": 1170.9999999729916,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 82,
+          "obs_game_tick": 324,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1128.8773289998062,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 673,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 85,
+          "obs_game_tick": 336,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 916.9760779996068,
+          "decision_latency_ms": 1109.000000054948,
+          "wire_ms": 1077.999999979511,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 674,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 93,
+          "obs_game_tick": 368,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1110.4405979995136,
+          "decision_latency_ms": 1234.000000054948,
+          "wire_ms": 1219.0000000409782,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 95,
+          "obs_game_tick": 376,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 920.8710129996689,
+          "decision_latency_ms": 1062.000000034459,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 676,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 105,
+          "obs_game_tick": 416,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 943.6732770000162,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 723,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 104,
+          "obs_game_tick": 412,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1174.8525919992971,
+          "decision_latency_ms": 1295.9999999729916,
+          "wire_ms": 1280.9999999590218,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 679,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 115,
+          "obs_game_tick": 456,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 923.43095599972,
+          "decision_latency_ms": 1062.999999965541,
+          "wire_ms": 1047.000000020489,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 701,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 116,
+          "obs_game_tick": 460,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1255.6583119994684,
+          "decision_latency_ms": 1390.0000000139698,
+          "wire_ms": 1375.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 707,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 125,
+          "obs_game_tick": 496,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 975.1662799999394,
+          "decision_latency_ms": 1125.0,
+          "wire_ms": 1109.9999999860302,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 765,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 128,
+          "obs_game_tick": 508,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1295.3285280000273,
+          "decision_latency_ms": 1469.0000000409782,
+          "wire_ms": 1454.0000000270084,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 826,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 135,
+          "obs_game_tick": 536,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1107.9072729999098,
+          "decision_latency_ms": 1266.0000000614673,
+          "wire_ms": 1250.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 803,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 142,
+          "obs_game_tick": 564,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1203.8512120007,
+          "decision_latency_ms": 1359.000000054948,
+          "wire_ms": 1359.000000054948,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 786,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 147,
+          "obs_game_tick": 584,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1176.173165000364,
+          "decision_latency_ms": 1391.0000000614673,
+          "wire_ms": 1375.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 802,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 155,
+          "obs_game_tick": 616,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1128.6930080004822,
+          "decision_latency_ms": 1391.0000000614673,
+          "wire_ms": 1391.0000000614673,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 766,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 160,
+          "obs_game_tick": 636,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 785.9839009997813,
+          "decision_latency_ms": 938.0000000819564,
+          "wire_ms": 922.0000000204891,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 763,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 168,
+          "obs_game_tick": 668,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1124.5394160005162,
+          "decision_latency_ms": 1265.0000000139698,
+          "wire_ms": 1250.0,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 770,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 169,
+          "obs_game_tick": 672,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1001.958912000191,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1155.9999999590218,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 734,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    },
+    {
+      "stats": {
+        "seed": 16,
+        "kills": 0,
+        "health": 6.0,
+        "native_tics": 326,
+        "active_wall_seconds": 9.75,
+        "effective_hz": 33.43589743589744,
+        "clock_valid": true,
+        "episode_finished": true,
+        "inference_count": 17,
+        "inference_mean_ms": 1029.827264352849,
+        "inference_p50_ms": 1070.5641229997127,
+        "inference_p95_ms": 1200.7840021999073,
+        "decision_latency_mean_ms": 1178.2941176309523,
+        "decision_latency_p50_ms": 1202.999999979511,
+        "decision_latency_p95_ms": 1338.2000000216067,
+        "action_age_mean_tics": 39.5,
+        "action_age_p95_tics": 45.699999999999996,
+        "observation_replacements": 65,
+        "submitted_actions": 17,
+        "applied_actions": 14,
+        "superseded_actions": 1,
+        "neutral_tics": 273,
+        "action_tics": {
+          "neutral": 273,
+          "shoot+turn_left": 17,
+          "shoot+move_forward": 20,
+          "move_forward+turn_right": 4,
+          "move_forward+turn_left": 8,
+          "shoot": 4
+        },
+        "selected_actions": {
+          "shoot+turn_left": 5,
+          "shoot+move_forward": 5,
+          "move_forward+turn_right": 1,
+          "move_forward+turn_left": 2,
+          "shoot": 1
+        },
+        "error": null
+      },
+      "decisions": [
+        {
+          "obs_seq": 1,
+          "obs_game_tick": 0,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 979.4001709997247,
+          "decision_latency_ms": 1155.9999999590218,
+          "wire_ms": 1140.999999945052,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 667,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 2,
+          "obs_game_tick": 4,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 925.650436000069,
+          "decision_latency_ms": 1077.999999979511,
+          "wire_ms": 1062.000000034459,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 677,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 11,
+          "obs_game_tick": 40,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1076.7265439999392,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 689,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 12,
+          "obs_game_tick": 44,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "shoot+turn_left",
+          "inference_ms": 1130.1351470001464,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1250.0,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 823,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 21,
+          "obs_game_tick": 80,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1070.5641229997127,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 692,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 23,
+          "obs_game_tick": 88,
+          "action": "move_forward+turn_right",
+          "buttons": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "completion": "move_forward+turn_right",
+          "inference_ms": 1190.6677209999543,
+          "decision_latency_ms": 1329.0000000270084,
+          "wire_ms": 1312.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 827,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 32,
+          "obs_game_tick": 124,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1105.5211599996255,
+          "decision_latency_ms": 1265.999999945052,
+          "wire_ms": 1234.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 691,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 35,
+          "obs_game_tick": 136,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 995.1922079999349,
+          "decision_latency_ms": 1172.000000020489,
+          "wire_ms": 1140.999999945052,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 694,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 46,
+          "obs_game_tick": 180,
+          "action": "turn_left",
+          "buttons": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left",
+          "inference_ms": 804.9566780000532,
+          "decision_latency_ms": 952.9999999795109,
+          "wire_ms": 937.0000000344589,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 696,
+          "completion_tokens": 3,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 43,
+          "obs_game_tick": 168,
+          "action": "move_forward+turn_left",
+          "buttons": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "completion": "move_forward+turn_left",
+          "inference_ms": 1241.249126999719,
+          "decision_latency_ms": 1375.0,
+          "wire_ms": 1359.9999999860302,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 694,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 55,
+          "obs_game_tick": 216,
+          "action": "shoot",
+          "buttons": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "completion": "shoot",
+          "inference_ms": 751.1469459996079,
+          "decision_latency_ms": 952.9999999795109,
+          "wire_ms": 907.0000000065193,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 696,
+          "completion_tokens": 2,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 56,
+          "obs_game_tick": 220,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1083.0625349999536,
+          "decision_latency_ms": 1202.999999979511,
+          "wire_ms": 1187.000000034459,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 692,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 64,
+          "obs_game_tick": 252,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shooting+move_forward",
+          "inference_ms": 1010.5977130006067,
+          "decision_latency_ms": 1156.0000000754371,
+          "wire_ms": 1141.0000000614673,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 694,
+          "completion_tokens": 6,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 67,
+          "obs_game_tick": 264,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "move_forward+shoot",
+          "inference_ms": 1079.2325229995186,
+          "decision_latency_ms": 1217.9999999934807,
+          "wire_ms": 1202.999999979511,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 700,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 72,
+          "obs_game_tick": 284,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 931.0706070000379,
+          "decision_latency_ms": 1093.9999999245629,
+          "wire_ms": 1062.999999965541,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 702,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 76,
+          "obs_game_tick": 300,
+          "action": "shoot+move_forward",
+          "buttons": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "completion": "shoot+move_forward",
+          "inference_ms": 1100.8896960001948,
+          "decision_latency_ms": 1219.0000000409782,
+          "wire_ms": 1203.0000000959262,
+          "lane": "t4-a2568c",
+          "provider": "remote-colab/t4-a2568c",
+          "prompt_tokens": 729,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        },
+        {
+          "obs_seq": 82,
+          "obs_game_tick": 324,
+          "action": "shoot+turn_left",
+          "buttons": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "completion": "turn_left+shoot",
+          "inference_ms": 1031.0001589996318,
+          "decision_latency_ms": 1186.9999999180436,
+          "wire_ms": 1186.9999999180436,
+          "lane": "t4-3f1be9",
+          "provider": "remote-colab/t4-3f1be9",
+          "prompt_tokens": 767,
+          "completion_tokens": 5,
+          "input_characters": 2095
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "episodes": 10,
+    "total_kills": 9,
+    "mean_kills": 0.9,
+    "mean_survival_seconds": 17.017142857142858,
+    "mean_effective_hz": 34.85660323573891,
+    "valid_clock_episodes": 10,
+    "mean_inference_ms": 1040.3792759934317,
+    "mean_decision_latency_ms": 1193.0124238663575,
+    "mean_action_age_tics": 41.38587873202224,
+    "total_neutral_tics": 4975,
+    "total_observation_replacements": 1212
+  },
+  "policy": {
+    "lane_count": 2,
+    "lanes": [
+      {
+        "name": "t4-a2568c",
+        "requests": 136,
+        "failures": 0,
+        "wire_ms": {
+          "count": 136,
+          "mean": 1232.080882349264,
+          "p50": 1226.4999999897555,
+          "p95": 1406.0000000754371
+        },
+        "server_compute_ms": {
+          "count": 136,
+          "mean": 1105.2504636764645,
+          "p50": 1089.0711160000137,
+          "p95": 1290.977446999932
+        },
+        "server_queue_ms": {
+          "count": 136,
+          "mean": 0.0017036396617614252,
+          "p50": 0.0016045000847952906,
+          "p95": 0.0024419996407232247
+        }
+      },
+      {
+        "name": "t4-3f1be9",
+        "requests": 145,
+        "failures": 0,
+        "wire_ms": {
+          "count": 145,
+          "mean": 1125.9034482706018,
+          "p50": 1109.000000054948,
+          "p95": 1312.999999965541
+        },
+        "server_compute_ms": {
+          "count": 145,
+          "mean": 983.1378939102785,
+          "p50": 961.4877470003194,
+          "p95": 1176.173165000364
+        },
+        "server_queue_ms": {
+          "count": 145,
+          "mean": 0.0019372552083825275,
+          "p50": 0.0018450000425218605,
+          "p95": 0.0026860006983042695
+        }
+      }
+    ]
+  }
+}

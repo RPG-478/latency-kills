@@ -1,6 +1,101 @@
 # Three physical T4 lanes — 同じLLMをGPUごと三交代にする
 
-Status: implementation ready; live Colab run pending.
+Status: **two physical T4 lanes measured on 2026-08-24**. The planned third
+runtime was rejected by Colab's concurrent-session limit.
+
+## 2026-08-24 実測結果
+
+有料ColabへA/B/Cの三notebookを用意したが、このaccountで同時に割り当てられたGPU runtimeは
+二つまでだった。A/CへLlama 3.1 8B Instructを4-bit NF4で一体ずつ置き、Bは
+`セッションが多すぎます`で未割当のままにした。したがって、これは三台実験の捏造版ではなく、
+**一台対二台の実測**である。
+
+共通条件は`defend_the_center`、seed 7〜16、unpaused `clock-thread`、Flat-4、TTL 400 ms、
+local aim assistなし。数字六択のlogit制約も使っていない。
+
+| 条件 | kill / 平均 | 判断数 | 判断mean / p50 / p95 | mean Hz | valid |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1 T4 / 1 lane / 100 ms観測 | 39 / **3.9** | 529 | 294.2 / 297 / 375 ms | 33.05 | 10 / 10 |
+| 2 T4 / 2 lane / 100 ms観測 | 44 / **4.4** | 1,061 | 263.7 / 250 / 344 ms | 33.03 | 10 / 10 |
+| 2 T4 / 2 lane / 40 ms観測 | 48 / **4.8** | 1,076 | 264.8 / 265 / 343 ms | 33.12 | 10 / 10 |
+
+二台化で判断数は`529 → 1,061`、**+100.6%**。物理GPU分散は意図どおり制御帯域をほぼ
+完全に二倍へした。一方、killは`3.9 → 4.4`、+0.5に留まった。seedごとのpaired比較は
+二台が6勝、1分、3敗である。観測を100 msから40 msへ縮めても判断数は`1,061 → 1,076`
+しか増えず、killは4.4から4.8だった。二laneが埋まった後の新観測はcoalesceされるため、
+観測生成だけを速くしても判断帯域は増えない。
+
+| remote内訳 | 1 T4 | 2 T4 / 100 ms | 2 T4 / 40 ms |
+| --- | ---: | ---: | ---: |
+| server compute | 111.2 ms | 111.0 / 99.4 ms | 111.1 / 99.2 ms |
+| public-tunnel wire | 232.7 ms | 235.4 / 243.9 ms | 227.0 / 249.6 ms |
+| request error | 0 | 0 | 0 |
+
+T4内部は約100〜111 msまで来たが、Cloudflare Quick Tunnelを含むwireは約227〜250 ms。
+三台目が借りられても一判断の古さは消えず、増えるのは主にcadenceである。今回cadenceを二倍に
+してもscoreが比例しなかったため、次のbottleneckはstale action、policy誤り、旋回overshoot、
+射撃機会の位相にある。
+
+raw CLI summary 30本は
+[`colab-t4-structured-30x-20260824.json`](results/colab-t4-structured-30x-20260824.json)
+（SHA-256 `3fc24f56b2a068f9b6882227ae7c6ee7f07fc7e4572ee7eafdbfe7073ce8f58b`）。
+runtime bearer tokenとendpointは含めていない。
+
+### 採用しない最初の1本
+
+最初はscenario指定を忘れて`basic`を実行し、1 kill時点の2.03秒でepisodeが終わった。通信確認には
+使えたが、15秒の性能値には混ぜていない。この失敗で`--duration 15`だけではscenarioの終了条件を
+上書きしないことを再確認した。
+
+### 起動中に直した二つのバグ
+
+1. 共通probe loggerがOpenRouter client固有の`.model`を仮定し、remote clientで落ちた。
+   remote poolへ非秘密の識別名を追加して修正した。
+2. Cloudflare URL発行直後、Colab自身のDNSに名前がまだ現れず、一回だけのpublic health checkが
+   落ちた。最大120秒のbounded retryへ修正した。
+
+### さらに見つかった本命: 6 / 6 probeは境界理解を保証していなかった
+
+上の三条件はすべてgame開始前の六択probeを6 / 6で通った。しかし実戦ログの
+`expected_token`と実出力を照合すると、意味正答率は一台100 msが56.33%、二台100 msが
+46.37%、二台40 msが53.53%しかなかった。二台100 msでは1,061判断のうち610回がFIREで、
+そのうち460回はrule上まだ左右旋回すべき位置だった。
+
+原因を分けるため、各物理laneへ同じ座標を直接送るdecision-boundary sweepを追加した。
+敵なし・弾なしに加えて`x=-500..500`を20刻みで53ケース測ると、両laneとも**29 / 53**。
+しかも53 / 53で二台の答えが完全一致した。したがってT4個体差やtunnelの化けではなく、
+同じmodelとpromptが同じように数値境界を誤読している。
+
+| 観測 | 期待 | 実際 | 注記 |
+| --- | --- | --- | --- |
+| `x=-351` | LEFT_LONG | RIGHT_LONG | 境界から十分左でも左右反転 |
+| `x=-350` | LEFT_LONG | LEFT_LONG | system prompt中の例そのもの |
+| `x=-349` | LEFT_LONG | LEFT_SHORT | 1だけ動くと別class |
+| `x=-81` | LEFT_SHORT | FIRE | まだ中央の外 |
+| `x=-80` | FIRE | LEFT_SHORT | 境界点で逆転 |
+| `x=149` | RIGHT_SHORT | FIRE | startup probeの1手前 |
+| `x=150` | RIGHT_SHORT | RIGHT_SHORT | startup probe点だけ正解 |
+| `x=151` | RIGHT_SHORT | FIRE | 1だけ動くと再び誤り |
+
+従来probeの6ケース中4ケースはsystem prompt中の例そのもので、残る左右SHORTも
+`-150 / 150`という固定の代表点だった。これは「六つのcanonical pointを返せる」試験であり、
+連続座標の区間を理解した証明ではなかった。挙動は**例題・probe点へのanchoringと壊れやすい
+数値補間に整合する**。内部機序を直接観測したわけではないので、単純な暗記と断定はしない。
+
+この発見により、二台化で判断数だけ倍増した説明も変わる。増やしていたのは正しい判断だけではなく、
+右にいる敵へ早すぎるFIREを返す判断も含む。`3.9 → 4.4 → 4.8`をGPU台数だけの限界と読む前に、
+holdout座標を含むprobeとpolicyの修正が必要である。
+
+生ログ:
+
+- [20刻み53ケース・二lane](results/remote-motor-boundary-sweep-2t4-20260824.json) —
+  SHA-256 `8ced9b0ab7fa933573702944bdbb087f3f73908d785bdd90a6d85948162040f1`
+- [境界・probe近傍29ケース・二lane](results/remote-motor-probe-neighborhood-2t4-20260824.json) —
+  SHA-256 `b958aa9a6e2c35e4b7235c56adf0459a94aa79bd99fdd204fc9b01b321223c94`
+
+次版の起動試験はprompt例と同じ値を合格判定へ使わず、境界の両側、未見の区間内部、乱数seedを
+固定したholdout sweepを別に採点する。現在の6 / 6は後方互換のsmoke testとして残すが、
+「運転免許」ではなく配線確認へ格下げする。
 
 ## 2026-08-24 runtime起動前のbrowser failure
 
@@ -15,9 +110,9 @@ confirmationを得た後、三notebookの起動を試みた。しかしruntime�
   自動化せず停止し、一時copy 591.3 MBはRecycle Binへ送り、元profileは変更していない。
 - local debug付きChrome起動はsecurity policyで拒否されたため、回避しなかった。
 
-この時点で**Colab runtimeは0台、消費CUは0**。notebook、Drive上のA/B/C copy、remote server、
-OpenRouter smoke/10-runはすでに準備済みで、ブラウザ制御helper復旧またはユーザーによるGoogle login後に
-`Run all`から再開できる。
+この時点では**Colab runtimeは0台、消費CUは0**だった。その後、Codex内蔵browserの別経路で
+復旧し、上記の二T4実測まで到達した。この失敗節は「GPUを借りる前に、GPUを借りる指が
+bottleneckになった」記録として残す。
 
 ## 発端
 
