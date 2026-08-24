@@ -88,6 +88,15 @@ async def sweep_lane(config, xs: list[int]) -> dict[str, object]:
 
 async def run(args: argparse.Namespace) -> dict[str, object]:
     configs = load_remote_lane_configs(config_file=args.lane_config)
+    if args.lane_name:
+        requested = set(args.lane_name)
+        available = {config.name for config in configs}
+        missing = requested - available
+        if missing:
+            raise ValueError(
+                f"unknown lane names: {sorted(missing)}; available: {sorted(available)}"
+            )
+        configs = tuple(config for config in configs if config.name in requested)
     xs = args.xs or list(range(args.x_min, args.x_max + 1, args.x_step))
     lanes = await asyncio.gather(*(sweep_lane(config, xs) for config in configs))
     lane_agreement: dict[str, object] | None = None
@@ -116,6 +125,11 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lane-config", type=Path, required=True)
+    parser.add_argument(
+        "--lane-name",
+        action="append",
+        help="query only this named lane from the config; repeat to select several",
+    )
     parser.add_argument("--x-min", type=int, default=-500)
     parser.add_argument("--x-max", type=int, default=500)
     parser.add_argument("--x-step", type=int, default=20)

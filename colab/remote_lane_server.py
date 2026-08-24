@@ -110,8 +110,27 @@ _V4_SYSTEMS["semantic-direction-v3-center"] = (
     "OFFSET=20 AMMO=10=>5; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=60 AMMO=10=>5; "
     "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=79 AMMO=10=>5. /no_think"
 )
+_V4_SYSTEMS["semantic-action-v4-boundaries"] = (
+    _V4_SYSTEMS["semantic-action-v4"].removesuffix(" /no_think")
+    + " Boundary checks in exact input format: TARGET=VISIBLE DIRECTION=LEFT "
+    "OFFSET=222 AMMO=10=>LEFT_LONG; TARGET=VISIBLE DIRECTION=LEFT OFFSET=221 "
+    "AMMO=10=>LEFT_LONG; TARGET=VISIBLE DIRECTION=LEFT OFFSET=220 "
+    "AMMO=10=>LEFT_SHORT; TARGET=VISIBLE DIRECTION=LEFT OFFSET=219 "
+    "AMMO=10=>LEFT_SHORT; TARGET=VISIBLE DIRECTION=LEFT OFFSET=82 "
+    "AMMO=10=>LEFT_SHORT; TARGET=VISIBLE DIRECTION=LEFT OFFSET=81 "
+    "AMMO=10=>LEFT_SHORT; TARGET=VISIBLE DIRECTION=LEFT OFFSET=80 AMMO=10=>FIRE; "
+    "TARGET=VISIBLE DIRECTION=LEFT OFFSET=79 AMMO=10=>FIRE; TARGET=VISIBLE "
+    "DIRECTION=RIGHT OFFSET=79 AMMO=10=>FIRE; TARGET=VISIBLE DIRECTION=RIGHT "
+    "OFFSET=80 AMMO=10=>FIRE; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=81 "
+    "AMMO=10=>RIGHT_SHORT; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=82 "
+    "AMMO=10=>RIGHT_SHORT; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=219 "
+    "AMMO=10=>RIGHT_SHORT; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=220 "
+    "AMMO=10=>RIGHT_SHORT; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=221 "
+    "AMMO=10=>RIGHT_LONG; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=222 "
+    "AMMO=10=>RIGHT_LONG. /no_think"
+)
 V4_POLICY_ID = os.environ.get(
-    "LATENCY_KILLS_V4_POLICY", "semantic-action-v4"
+    "LATENCY_KILLS_V4_POLICY", "semantic-action-v4-boundaries"
 ).strip()
 try:
     V4_SYSTEM = _V4_SYSTEMS[V4_POLICY_ID]
@@ -194,7 +213,7 @@ HF_TOKEN = ""
 def _model_observation(observation: str) -> str:
     if not (
         V4_POLICY_ID.startswith("semantic-direction-v3")
-        or V4_POLICY_ID == "semantic-action-v4"
+        or V4_POLICY_ID.startswith("semantic-action-v4")
     ):
         return observation
     visible, x, ammo = _observation(observation)
@@ -288,7 +307,7 @@ def _infer(observation: str) -> tuple[str, float, int, str, int]:
                 past_key_values=_cache,
                 use_cache=True,
             )
-            if V4_POLICY_ID == "semantic-action-v4":
+            if V4_POLICY_ID.startswith("semantic-action-v4"):
                 completion_ids: list[int] = []
                 decision_text = ""
                 chosen_token: str | None = None
@@ -507,12 +526,14 @@ def health() -> dict[str, Any]:
             "semantic-direction"
             if (
                 V4_POLICY_ID.startswith("semantic-direction-v3")
-                or V4_POLICY_ID == "semantic-action-v4"
+                or V4_POLICY_ID.startswith("semantic-action-v4")
             )
             else "raw"
         ),
         "motor_output_mode": (
-            "action-label" if V4_POLICY_ID == "semantic-action-v4" else "digit"
+            "action-label"
+            if V4_POLICY_ID.startswith("semantic-action-v4")
+            else "digit"
         ),
         "prefix_tokens": _prefix_len,
         "load_seconds": round(LOAD_SECONDS, 3),
