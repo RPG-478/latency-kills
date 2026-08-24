@@ -707,6 +707,15 @@ async def _probe_direct_motor_suite(
             (MotorToken.RIGHT_LONG, False, None, 10),
             (MotorToken.FIRE, True, 0.037, 10),
         )
+    elif probe_profile == "latency-lead":
+        cases = (
+            (MotorToken.WAIT, True, -0.317, 0),
+            (MotorToken.LEFT_SHORT, True, -0.150, 10),
+            (MotorToken.LEFT_LONG, True, -0.437, 10),
+            (MotorToken.RIGHT_SHORT, True, 0.200, 10),
+            (MotorToken.RIGHT_LONG, False, None, 10),
+            (MotorToken.FIRE, True, 0.137, 10),
+        )
     else:
         raise ValueError(f"unknown direct-motor probe profile: {probe_profile}")
     frames: dict[MotorToken, object] = {}

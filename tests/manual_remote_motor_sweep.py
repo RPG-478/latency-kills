@@ -28,23 +28,32 @@ TOKEN_NAMES = {
 }
 
 
-def expected_token(*, visible: int, x: int, ammo: int) -> str:
+def expected_token(
+    *,
+    visible: int,
+    x: int,
+    ammo: int,
+    left_fire_max: int = 80,
+    right_fire_max: int = 80,
+) -> str:
     if visible == 0:
         return "4"
     if ammo <= 0:
         return "0"
     if x < -220:
         return "2"
-    if x < -80:
+    if x < -left_fire_max:
         return "1"
-    if x <= 80:
+    if x <= right_fire_max:
         return "5"
     if x <= 220:
         return "3"
     return "4"
 
 
-async def sweep_lane(config, xs: list[int]) -> dict[str, object]:
+async def sweep_lane(
+    config, xs: list[int], *, left_fire_max: int, right_fire_max: int
+) -> dict[str, object]:
     client = RemoteLanePoolClient((config,), timeout_seconds=30.0)
     rows: list[dict[str, object]] = []
     try:
@@ -59,7 +68,13 @@ async def sweep_lane(config, xs: list[int]) -> dict[str, object]:
                 on_visible=lambda token, _arrived: seen.append(token),
             )
             actual = seen[0]
-            expected = expected_token(visible=visible, x=x, ammo=ammo)
+            expected = expected_token(
+                visible=visible,
+                x=x,
+                ammo=ammo,
+                left_fire_max=left_fire_max,
+                right_fire_max=right_fire_max,
+            )
             rows.append(
                 {
                     "visible": visible,
@@ -98,7 +113,17 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
             )
         configs = tuple(config for config in configs if config.name in requested)
     xs = args.xs or list(range(args.x_min, args.x_max + 1, args.x_step))
-    lanes = await asyncio.gather(*(sweep_lane(config, xs) for config in configs))
+    lanes = await asyncio.gather(
+        *(
+            sweep_lane(
+                config,
+                xs,
+                left_fire_max=args.left_fire_max,
+                right_fire_max=args.right_fire_max,
+            )
+            for config in configs
+        )
+    )
     lane_agreement: dict[str, object] | None = None
     if len(lanes) > 1:
         reference = [row["actual"] for row in lanes[0]["rows"]]
@@ -117,6 +142,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "x_max": args.x_max,
         "x_step": args.x_step,
         "x_values": xs,
+        "left_fire_max": args.left_fire_max,
+        "right_fire_max": args.right_fire_max,
         "lanes": lanes,
         "lane_agreement": lane_agreement,
     }
@@ -134,10 +161,16 @@ def main() -> None:
     parser.add_argument("--x-max", type=int, default=500)
     parser.add_argument("--x-step", type=int, default=20)
     parser.add_argument("--xs", type=int, nargs="+")
+    parser.add_argument("--left-fire-max", type=int, default=80)
+    parser.add_argument("--right-fire-max", type=int, default=80)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.xs is None and (args.x_min > args.x_max or args.x_step <= 0):
         parser.error("x range must be ascending with a positive step")
+    if not 0 <= args.left_fire_max <= 220:
+        parser.error("--left-fire-max must be between 0 and 220")
+    if not 0 <= args.right_fire_max <= 220:
+        parser.error("--right-fire-max must be between 0 and 220")
     result = asyncio.run(run(args))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

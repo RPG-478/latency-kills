@@ -117,6 +117,30 @@ _V4_SYSTEMS = {
         "AMMO=10=>right; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=350 AMMO=10=>east; "
         "TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 AMMO=0=>wait. /no_think"
     ),
+    "semantic-words-v6-lead": (
+        "You control a turret with delayed commands. The user gives TARGET, "
+        "DIRECTION, OFFSET, and AMMO. OFFSET is a non-negative horizontal "
+        "distance from the crosshair at observation time. Reply with exactly "
+        "one lowercase motor word and nothing else: wait, left, west, right, "
+        "east, or fire. Meanings: wait=do nothing; left=short left turn; "
+        "west=long left turn; right=short right turn; east=long right turn; "
+        "fire=shoot. West and east are motor-strength codes, not map coordinates. "
+        "Commands arrive late while the turret usually searches right, so use "
+        "an asymmetric firing lead. Apply the first true rule: TARGET=NONE means "
+        "east; otherwise AMMO<=0 means wait; otherwise DIRECTION=LEFT and "
+        "OFFSET<=100 means fire; otherwise DIRECTION=RIGHT and OFFSET<=180 "
+        "means fire; otherwise DIRECTION=CENTER means fire; otherwise "
+        "DIRECTION=LEFT and OFFSET<=220 means left; otherwise DIRECTION=LEFT "
+        "means west; otherwise DIRECTION=RIGHT and OFFSET<=220 means right; "
+        "otherwise DIRECTION=RIGHT means east. Examples: TARGET=NONE AMMO=10=>east; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 AMMO=10=>west; TARGET=VISIBLE "
+        "DIRECTION=LEFT OFFSET=150 AMMO=10=>left; TARGET=VISIBLE DIRECTION=LEFT "
+        "OFFSET=80 AMMO=10=>fire; TARGET=VISIBLE DIRECTION=CENTER OFFSET=0 "
+        "AMMO=10=>fire; TARGET=VISIBLE DIRECTION=RIGHT OFFSET=137 AMMO=10=>fire; "
+        "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=200 AMMO=10=>right; TARGET=VISIBLE "
+        "DIRECTION=RIGHT OFFSET=350 AMMO=10=>east; TARGET=VISIBLE DIRECTION=LEFT "
+        "OFFSET=350 AMMO=0=>wait. /no_think"
+    ),
 }
 _V4_SYSTEMS["semantic-direction-v3-center"] = (
     _V4_SYSTEMS["semantic-direction-v3"].removesuffix(" /no_think")
@@ -234,7 +258,7 @@ def _model_observation(observation: str) -> str:
     if not (
         V4_POLICY_ID.startswith("semantic-direction-v3")
         or V4_POLICY_ID.startswith("semantic-action-v4")
-        or V4_POLICY_ID == "semantic-words-v5"
+        or V4_POLICY_ID.startswith("semantic-words-v")
     ):
         return observation
     visible, x, ammo = _observation(observation)
@@ -338,9 +362,9 @@ def _infer(observation: str) -> tuple[str, float, int, str, int]:
             )
             if (
                 V4_POLICY_ID.startswith("semantic-action-v4")
-                or V4_POLICY_ID == "semantic-words-v5"
+                or V4_POLICY_ID.startswith("semantic-words-v")
             ):
-                if V4_POLICY_ID == "semantic-words-v5":
+                if V4_POLICY_ID.startswith("semantic-words-v"):
                     word_to_token = _SEMANTIC_WORD_TO_TOKEN
                     normalize = lambda text: text.strip().lower()
                 else:
@@ -565,7 +589,7 @@ def health() -> dict[str, Any]:
             if (
                 V4_POLICY_ID.startswith("semantic-direction-v3")
                 or V4_POLICY_ID.startswith("semantic-action-v4")
-                or V4_POLICY_ID == "semantic-words-v5"
+                or V4_POLICY_ID.startswith("semantic-words-v")
             )
             else "raw"
         ),
@@ -573,14 +597,14 @@ def health() -> dict[str, Any]:
             "action-label"
             if V4_POLICY_ID.startswith("semantic-action-v4")
             else "semantic-word"
-            if V4_POLICY_ID == "semantic-words-v5"
+            if V4_POLICY_ID.startswith("semantic-words-v")
             else "digit"
         ),
         "motor_label_token_counts": {
             label: len(tokenizer.encode(label, add_special_tokens=False))
             for label in (
                 _SEMANTIC_WORD_TO_TOKEN
-                if V4_POLICY_ID == "semantic-words-v5"
+                if V4_POLICY_ID.startswith("semantic-words-v")
                 else _ACTION_WORD_TO_TOKEN
                 if V4_POLICY_ID.startswith("semantic-action-v4")
                 else ()

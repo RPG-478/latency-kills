@@ -148,10 +148,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     remote.add_argument(
         "--probe-profile",
-        choices=("smoke", "holdout"),
+        choices=("smoke", "holdout", "latency-lead"),
         default="holdout",
         help=(
             "holdout tests coordinates absent from the prompt examples; "
+            "latency-lead validates the asymmetric predictive-fire policy; "
             "smoke retains the historical canonical-point wiring check"
         ),
     )
