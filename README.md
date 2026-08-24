@@ -112,6 +112,39 @@ action policyを変えず、action到着だけを最低200 msへ遅らせると1
 - [raw result JSON](docs/results/)
 - [VAGO原論文と他の先行研究](docs/prior-art.md)
 
+## 追試: 意味を一tokenへ戻し、古い命令だけ捨てる
+
+上の主結果とは別に、Colab T4へLlama 3.1 8Bを常駐させ、V4の「速さ」と「意味」を分解した。
+旧V4の数字`0`〜`5`は速い一方、未見座標の静的試験で29 / 53しか合わなかった。
+
+`WAIT / LEFT_SHORT / ...`をそのまま生成させると48 / 53まで直ったが、平均1.984 tokenとなり
+server computeは172.7 msへ悪化。そこで六操作を、全てtokenizer上1 tokenの
+`wait / left / west / right / east / fire`へ符号化した。`west / east`はLONG旋回の筋肉コードで、
+local側は返答を固定変換するだけで敵座標から操作を選び直さない。
+
+| unpaused Colab条件 | kill平均 | 静的rule正答率 | 判断mean | server compute |
+|---|---:|---:|---:|---:|
+| 旧digit / 2 T4 / TTL 400 ms | **4.8** | 53.53% | 264.8 ms | 105.3 ms |
+| semantic label / 2 T4 / TTL 400 ms | 3.4 | 84.54% | 335.6 ms | 172.7 ms |
+| semantic one-token / 2 T4 / TTL 400 ms | 3.3 | 81.63% | 278.5 ms | 110.0 ms |
+| semantic one-token / 1 T4 / TTL 400 ms | 4.1 | **85.34%** | 282.7 ms | 116.0 ms |
+| **semantic one-token / 2 T4 / TTL 300 ms** | **4.6** | 83.69% | 273.3 ms | 110.1 ms |
+
+全てseed 7〜16、35 Hz、40 ms観測、Flat-4。意味正答率を直してもscoreは単調に上がらず、二laneも
+一laneより弱くなった。約0.28秒古い命令では、正確な現在座標追従や高い返答頻度が、そのまま
+stale command競合になるためである。
+
+action age上限を300 msへ縮めると、同じ二T4 V5が33→46 kill、平均3.3→4.6へ回復した。一方
+250 msでは返答の意味正答率92.86%でも約8割を期限切れで捨て、平均1.4へ崩れた。今回の新しい結論は、
+**命令は古すぎても駄目だが、新鮮さを求めすぎて身体を飢えさせても駄目**という制御帯域の崖である。
+ただしTTL 300−400 msのpaired bootstrap 95% intervalは`[-0.4, 3.1]`で、10 seedではまだ
+統計的に決着していない。4.6は現在の探索上の最良値であり、確定したSOTAや普遍的な最適TTLとは呼ばない。
+さらに一台だけを300 msへすると、同じ5 seedで5.0→3.4へ低下した。二laneで返答供給を増やし、
+TTLで古いtailを落とす二つを組み合わせた時だけ改善したため、帯域と鮮度は別々に最適化できない。
+
+- [One-token semantic motorsの全比較](docs/experiment-semantic-one-token-motors.md)
+- [V5 / 2 T4 / TTL 300 msの10本](docs/results/colab-t4-semantic-words-v5-nf4-ttl300-10x-20260824.json)
+
 ## 動いているところ
 
 V4では、一つの汎用Cloud LLMがWAIT / LEFT / RIGHT / FIREとpulse長を一文字で直接選びます。
@@ -258,6 +291,7 @@ game threadまで飢えさせ14〜20 Hzへ落ちました。したがって正�
 | 用途 | 環境 | 主な実測 |
 |---|---|---|
 | Cloud V4 | OpenRouter、Groq、Llama 3.1 8B Instruct | mean 232.8 ms、平均4.0 kill |
+| Remote semantic V5 | Google Colab T4 × 2、Quick Tunnel、Llama 3.1 8B NF4 | compute 110.1 ms、wire 245.9 ms、TTL 300 msで平均4.6 kill |
 | 1.3M async | Google Colab、Tesla T4、Python 3.12 | compute 28.1 ms、35.019 Hz、平均17.7 kill |
 | 1.3M + 200 ms | 同じColab T4 | action age 7.038 tic、35.045 Hz、平均4.2 kill |
 
@@ -289,6 +323,7 @@ game threadまで飢えさせ14〜20 Hzへ落ちました。したがって正�
 | V4 Async | worldとmotorを独立35 Hz clockへ修理 | flat-4平均4.0 |
 | VAGO Async | 1.3M専用modelを同じ止まらない世界へ | 平均17.7 |
 | VAGO 200 ms | 1.3Mのaction鮮度だけCloud級へ落とす | 平均4.2 |
+| Remote V5 | 意味を持つ六つの1-token motor word＋action TTL | TTL 300 msで平均4.6、250 msで1.4 |
 
 途中の黒板干渉、敵label取りこぼし、LONG=20 tic、overshoot、CPU starvation、Doom lifecycle hangも
 失敗ごと公開しています。[documentation map](docs/README.md)から全記録へ進めます。
@@ -298,6 +333,7 @@ game threadまで飢えさせ14〜20 Hzへ落ちました。したがって正�
 - 30 / 60 / 100 / 150 / 200 / 233 / 300 msのlatency cliffを描く
 - 固定delayと同じ平均を持つCloud型jitterを比較する
 - stale actionを実行 / 破棄 / 予測補正する条件を比べる
+- semantic V5で見つかった250 / 300 / 350 / 400 msのTTL崖をseed・scenarioを増やして再検証する
 - seed数とscenarioを増やし、bootstrap confidence intervalを出す
 - action ageを第一級metricとして、robotics / VLA / networked controlの先行研究を再監査する
 

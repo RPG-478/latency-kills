@@ -44,3 +44,11 @@ PR tree. The default branch/tag graph has a 122,261-byte largest blob, so normal
 
 The pre-rewrite repository bundle and SHA-256 GIF manifest remain offline under the workspace artifact
 directory; they are not published with the repository.
+
+## 2026-08-24 result-hash addendum
+
+Windowsで生成したJSONを`Get-FileHash`するとworking treeのCRLFをhashするが、このrepositoryは
+`.gitattributes`でtextをLFへ正規化する。最初のColab result文書はCRLF側のSHAを書いてしまい、
+GitHubから取得したblobと一致しなかった。公開値をGit LF blobのSHAへ訂正し、二つのmanual result
+writerも`newline="\n"`固定へ変更した。以後、公開artifactのhashはworking fileではなくGitへ入る
+LF bytesに対して検証する。

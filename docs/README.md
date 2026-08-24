@@ -10,6 +10,7 @@ through the resulting paper trail.
 - [Slow the 1.3M policy to 200 ms](experiment-vago-1.3m-200ms-latency.md) — latency alone drops it from 17.7 to 4.2 kills
 - [Paper plan: action staleness](paper-plan-action-staleness.md) — hypothesis, contribution boundary, and the experiments still required
 - [Physical Colab T4 lanes](experiment-three-t4-distributed-lanes.md) — the account allowed two, not three; throughput doubled while score moved only 3.9→4.4
+- [One-token semantic motors](experiment-semantic-one-token-motors.md) — six meaningful one-token actions, the “more correct but weaker” reversal, and a TTL cliff with 300 ms at 4.6 kills/game
 - [V4 probe language failure](v4-probe-language-failure.md) — the old 6/6 smoke test fell to 29/53 on unseen coordinates; both T4s failed identically
 - [Byte-aligned VAGO Cloud text input](experiment-vago-cloud-text-alignment.md) — OpenRouter and two T4s, including a system-prefix cache that cut compute 25% without changing kills
 - [Prior art and fairness boundary](prior-art.md) — what this rebuts and what it does not

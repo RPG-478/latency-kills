@@ -1,0 +1,69 @@
+{
+  "date": "2026-08-24",
+  "seeds": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+  "method": {
+    "bootstrap": "200000 paired resamples with replacement, seed 20260824, percentile interval",
+    "randomization_test": "exact two-sided paired sign-flip test over all 1024 sign assignments"
+  },
+  "comparisons": {
+    "ttl300_two_lane_minus_ttl400_two_lane": {
+      "paired_differences": [7, -2, -3, 2, 0, 4, 0, 0, 1, 4],
+      "mean_difference": 1.3,
+      "bootstrap_95_percentile_ci": [-0.4, 3.1],
+      "exact_two_sided_p": 0.25,
+      "wins": 5,
+      "ties": 3,
+      "losses": 2
+    },
+    "ttl300_two_lane_minus_ttl400_one_lane": {
+      "paired_differences": [1, 0, -5, 0, 1, 5, -2, -1, 2, 4],
+      "mean_difference": 0.5,
+      "bootstrap_95_percentile_ci": [-1.2, 2.2],
+      "exact_two_sided_p": 0.6796875,
+      "wins": 5,
+      "ties": 2,
+      "losses": 3
+    },
+    "ttl300_semantic_minus_ttl400_digit": {
+      "paired_differences": [4, -3, -5, 0, 1, 3, -1, 0, -2, 1],
+      "mean_difference": -0.2,
+      "bootstrap_95_percentile_ci": [-1.8, 1.4],
+      "exact_two_sided_p": 0.90625,
+      "wins": 4,
+      "ties": 2,
+      "losses": 4
+    }
+  },
+  "five_seed_lane_ttl_matrix": {
+    "seeds": [7, 8, 9, 10, 11],
+    "one_lane_ttl400": {
+      "kills": [8, 2, 8, 4, 3],
+      "kills_mean": 5.0,
+      "returned_decisions": 244,
+      "accepted_decisions": 232,
+      "expired_decisions": 12
+    },
+    "one_lane_ttl300": {
+      "kills": [4, 3, 4, 2, 4],
+      "kills_mean": 3.4,
+      "returned_decisions": 217,
+      "accepted_decisions": 152,
+      "expired_decisions": 64
+    },
+    "two_lane_ttl400": {
+      "kills": [2, 4, 6, 2, 4],
+      "kills_mean": 3.6,
+      "returned_decisions": 437,
+      "accepted_decisions": 396,
+      "expired_decisions": 20
+    },
+    "two_lane_ttl300": {
+      "kills": [9, 2, 3, 4, 4],
+      "kills_mean": 4.4,
+      "returned_decisions": 483,
+      "accepted_decisions": 334,
+      "expired_decisions": 131
+    }
+  },
+  "interpretation": "All intervals cross zero. The ten-seed score ordering is an exploratory effect estimate, not a statistically decisive superiority claim."
+}

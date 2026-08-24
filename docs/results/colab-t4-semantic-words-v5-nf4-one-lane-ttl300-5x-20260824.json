@@ -1,0 +1,175 @@
+{
+  "experiment": "1 T4 NF4 semantic-words-v5, 40 ms observation, TTL 300 ms",
+  "seeds": [
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "conditions": {
+    "scenario": "defend_the_center",
+    "world_clock": "clock-thread",
+    "motor_body": "clock-thread",
+    "lanes": 1,
+    "observation_interval_seconds": 0.04,
+    "motor_token_max_age_ms": 300,
+    "motor_flat_pulse_ticks": 4,
+    "policy_ids": [
+      "semantic-words-v5"
+    ],
+    "quantizations": [
+      "bitsandbytes NF4, float16 compute"
+    ],
+    "observation_encodings": [
+      "semantic-direction"
+    ],
+    "motor_output_modes": [
+      "semantic-word"
+    ]
+  },
+  "aggregate": {
+    "runs": 5,
+    "valid_runs": 5,
+    "kills_total": 17,
+    "kills_mean": 3.4,
+    "kills_by_seed": [
+      4,
+      3,
+      4,
+      2,
+      4
+    ],
+    "decisions": 217,
+    "semantic_correct": 201,
+    "semantic_incorrect": 16,
+    "semantic_accuracy": 0.9262672811059908,
+    "wrong_fire_decisions": 9,
+    "request_errors": 0,
+    "mean_effective_tick_hz": 33.183800000000005,
+    "decision_latency_ms": {
+      "count": 217,
+      "mean": 278.9585253444805,
+      "p50": 265.99999994505197,
+      "p95": 375.0,
+      "min": 217.99999999348074,
+      "max": 579.0000000270084
+    },
+    "remote_wire_ms": {
+      "count": 217,
+      "mean": 247.99539170534808,
+      "p50": 234.00000005494803,
+      "p95": 342.99999999348074,
+      "min": 202.9999999795109,
+      "max": 547.0000000204891
+    },
+    "server_compute_ms": {
+      "count": 217,
+      "mean": 115.94078930876651,
+      "p50": 114.67012600041926,
+      "p95": 126.32069400024193,
+      "min": 105.01125799964939,
+      "max": 131.6201949994138
+    },
+    "completion_tokens": {
+      "count": 217,
+      "mean": 1.0,
+      "p50": 1.0,
+      "p95": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "actual_actions": {
+      "FIRE": 58,
+      "LEFT_LONG": 4,
+      "LEFT_SHORT": 14,
+      "RIGHT_LONG": 120,
+      "RIGHT_SHORT": 21
+    },
+    "confusion_expected_to_actual": {
+      "FIRE": {
+        "FIRE": 49,
+        "LEFT_SHORT": 1
+      },
+      "LEFT_LONG": {
+        "LEFT_LONG": 4,
+        "LEFT_SHORT": 1
+      },
+      "LEFT_SHORT": {
+        "FIRE": 3,
+        "LEFT_SHORT": 12
+      },
+      "RIGHT_LONG": {
+        "RIGHT_LONG": 120,
+        "RIGHT_SHORT": 5
+      },
+      "RIGHT_SHORT": {
+        "FIRE": 6,
+        "RIGHT_SHORT": 16
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 7,
+      "run_directory": "20260824-162115-2a8c2d9d",
+      "kills": 4,
+      "valid": true,
+      "decisions": 44,
+      "semantic_correct": 41,
+      "semantic_accuracy": 0.9318181818181818,
+      "request_errors": 0,
+      "effective_tick_hz": 33.493,
+      "duration_ms": 11047
+    },
+    {
+      "seed": 8,
+      "run_directory": "20260824-162130-e0d1d433",
+      "kills": 3,
+      "valid": true,
+      "decisions": 41,
+      "semantic_correct": 37,
+      "semantic_accuracy": 0.9024390243902439,
+      "request_errors": 0,
+      "effective_tick_hz": 31.907,
+      "duration_ms": 10844
+    },
+    {
+      "seed": 9,
+      "run_directory": "20260824-162144-a758981d",
+      "kills": 4,
+      "valid": true,
+      "decisions": 48,
+      "semantic_correct": 45,
+      "semantic_accuracy": 0.9375,
+      "request_errors": 0,
+      "effective_tick_hz": 33.872,
+      "duration_ms": 11750
+    },
+    {
+      "seed": 10,
+      "run_directory": "20260824-162158-a36220ff",
+      "kills": 2,
+      "valid": true,
+      "decisions": 38,
+      "semantic_correct": 37,
+      "semantic_accuracy": 0.9736842105263158,
+      "request_errors": 0,
+      "effective_tick_hz": 33.608,
+      "duration_ms": 9343
+    },
+    {
+      "seed": 11,
+      "run_directory": "20260824-162210-5be2230e",
+      "kills": 4,
+      "valid": true,
+      "decisions": 46,
+      "semantic_correct": 41,
+      "semantic_accuracy": 0.8913043478260869,
+      "request_errors": 0,
+      "effective_tick_hz": 33.039,
+      "duration_ms": 11562
+    }
+  ],
+  "summaries": null
+}

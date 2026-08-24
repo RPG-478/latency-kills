@@ -27,6 +27,25 @@
    - 30〜300 msでscoreが滑らかに落ちるか、特定tickで崖になるかを調べる。
 5. **staleness対策を同じ物差しで比較する**
    - latest-only、TTL、破棄、予測補正、action chunk、world停止を比較する。
+6. **鮮度だけでなくaction supplyも測る**
+   - TTLを短くすると古い命令は減るが、身体へ届く操作も減る。accept率とneutral ticを
+     action ageと同時に報告し、「新鮮だが飢えたcontroller」を分ける。
+
+## 2026-08-24 TTL予備実験
+
+Llama 3.1 8B、semantic one-token policy、二T4、35 Hz clockを固定し、action age上限を
+250 / 300 / 350 / 400 msへ振った。seed 7〜11の平均killは`1.4 / 4.4 / 3.6 / 3.6`、
+accept率は`19.2 / 69.2 / 87.7 / 90.6%`だった。250 msでは返答の静的意味正答率が
+92.86%まで上がったのに、操作が飢えて最弱になった。
+
+300 msを10 seedへ延長すると平均4.6、同じV5 / 400 msは3.3。ただしpaired bootstrap
+95% intervalは`[-0.4, 3.1]`、exact sign-flipは`p=0.25`で、優越は未確定である。
+この予備結果はTTL曲線が単調でない可能性と、accepted-action bandwidthを共変量でなく
+第一級metricにする必要を示す。[完全な記録](experiment-semantic-one-token-motors.md)。
+
+追加の5 seed 2×2では、一laneのTTL 400→300 msは平均5.0→3.4、accept 232→152へ低下。
+二laneでは400→300 msが3.6→4.4、accept 396→334だった。厳しいTTLを単独で使うと身体が飢え、
+複数laneの供給量と組み合わせた時だけstale tailを切れる、というinteraction仮説が生まれた。
 
 ## 最低限必要な本実験
 
@@ -34,6 +53,7 @@
 - 各条件を十分なseed数で実行し、平均・中央値・bootstrap confidence intervalを出す
 - 固定delayと、同じ平均を持つCloud型jitterを比較する
 - action age、kill、survival、neutral tic、観測置換、p95 latencyを保存する
+- TTL sweepは条件順をrandomize / interleaveし、accepted・expired・committed action率を保存する
 - pulse長、observation interval、queue方式を個別ablationする
 - 同一model内のpaired comparisonを主結果にし、Cloudとの比較は補助結果にする
 - 少なくとも複数scenarioで再現し、`defend_the_center`固有現象でないことを確認する
@@ -46,12 +66,14 @@
 - VAGO 1.3Mは止まらない35 Hz世界でも平均17.7を維持した
 - 同一policyへ200 ms floorを入れるだけで平均4.2まで低下した
 - clock低下やmodel変更を伴わず、action ageは約6 tic増えた
+- semantic V5の250 ms TTLは返答正答率が高くてもaction supply不足で平均1.4まで崩れた
 
 ### 本実験前には言わない
 
 - すべてのFPS agentで同じ閾値になる
 - Cloud LLMとVAGOの知能が同等である
 - latencyだけが唯一の性能要因である
+- TTL 300 msが普遍的な最適値である
 - action ageという概念自体が新規である
 
 最後の新規性は、robotics、real-time RL、networked control、game agent、VLAの先行研究を

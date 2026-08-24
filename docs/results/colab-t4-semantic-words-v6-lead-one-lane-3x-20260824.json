@@ -1,0 +1,149 @@
+{
+  "experiment": "1 T4 NF4 semantic-words-v6-lead-simple, unpaused 40 ms observation",
+  "seeds": [
+    7,
+    8,
+    9
+  ],
+  "conditions": {
+    "scenario": "defend_the_center",
+    "world_clock": "clock-thread",
+    "motor_body": "clock-thread",
+    "lanes": 1,
+    "observation_interval_seconds": 0.04,
+    "motor_token_max_age_ms": 400,
+    "motor_flat_pulse_ticks": 4,
+    "policy_ids": [
+      "semantic-words-v6-lead-simple"
+    ],
+    "quantizations": [
+      "bitsandbytes NF4, float16 compute"
+    ],
+    "observation_encodings": [
+      "semantic-direction"
+    ],
+    "motor_output_modes": [
+      "semantic-word"
+    ]
+  },
+  "aggregate": {
+    "runs": 3,
+    "valid_runs": 3,
+    "kills_total": 6,
+    "kills_mean": 2.0,
+    "kills_by_seed": [
+      1,
+      2,
+      3
+    ],
+    "decisions": 119,
+    "semantic_correct": 73,
+    "semantic_incorrect": 46,
+    "semantic_accuracy": 0.6134453781512605,
+    "wrong_fire_decisions": 25,
+    "request_errors": 0,
+    "mean_effective_tick_hz": 32.99733333333333,
+    "decision_latency_ms": {
+      "count": 119,
+      "mean": 291.92436974742174,
+      "p50": 280.9999999590218,
+      "p95": 406.00000007543713,
+      "min": 219.0000000409782,
+      "max": 640.999999945052
+    },
+    "remote_wire_ms": {
+      "count": 119,
+      "mean": 261.8151260510541,
+      "p50": 234.99999998603016,
+      "p95": 375.0,
+      "min": 202.9999999795109,
+      "max": 546.9999999040738
+    },
+    "server_compute_ms": {
+      "count": 119,
+      "mean": 104.16747539497041,
+      "p50": 103.37708599945472,
+      "p95": 110.69426799986104,
+      "min": 97.20767799990426,
+      "max": 114.07566799971391
+    },
+    "completion_tokens": {
+      "count": 119,
+      "mean": 1.0,
+      "p50": 1.0,
+      "p95": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "actual_actions": {
+      "FIRE": 34,
+      "LEFT_SHORT": 20,
+      "RIGHT_LONG": 56,
+      "RIGHT_SHORT": 9
+    },
+    "confusion_expected_to_actual": {
+      "FIRE": {
+        "FIRE": 9,
+        "LEFT_SHORT": 13,
+        "RIGHT_LONG": 3,
+        "RIGHT_SHORT": 1
+      },
+      "LEFT_LONG": {
+        "LEFT_SHORT": 1,
+        "RIGHT_LONG": 1
+      },
+      "LEFT_SHORT": {
+        "FIRE": 1,
+        "LEFT_SHORT": 6,
+        "RIGHT_SHORT": 1
+      },
+      "RIGHT_LONG": {
+        "RIGHT_LONG": 51
+      },
+      "RIGHT_SHORT": {
+        "FIRE": 24,
+        "RIGHT_LONG": 1,
+        "RIGHT_SHORT": 7
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 7,
+      "run_directory": "20260824-154452-e097d7ee",
+      "kills": 1,
+      "valid": true,
+      "decisions": 37,
+      "semantic_correct": 20,
+      "semantic_accuracy": 0.5405405405405406,
+      "request_errors": 0,
+      "effective_tick_hz": 33.247,
+      "duration_ms": 9625
+    },
+    {
+      "seed": 8,
+      "run_directory": "20260824-154520-56b9d6c7",
+      "kills": 2,
+      "valid": true,
+      "decisions": 43,
+      "semantic_correct": 26,
+      "semantic_accuracy": 0.6046511627906976,
+      "request_errors": 0,
+      "effective_tick_hz": 33.269,
+      "duration_ms": 11422
+    },
+    {
+      "seed": 9,
+      "run_directory": "20260824-154554-6f2f1092",
+      "kills": 3,
+      "valid": true,
+      "decisions": 39,
+      "semantic_correct": 27,
+      "semantic_accuracy": 0.6923076923076923,
+      "request_errors": 0,
+      "effective_tick_hz": 32.476,
+      "duration_ms": 10531
+    }
+  ],
+  "summaries": null
+}

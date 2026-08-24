@@ -176,6 +176,6 @@ delivery -22.8%、action age -23.2%、判断数 +74.5%まで改善したが、ki
 生ログ:
 
 - [Colab 2 T4 / cache前](results/vago-cloud-text-colab-2t4-uncached-10x-20260824.json) —
-  SHA-256 `df1ceb115e07dc57da9111a26d8f148f6a78403db1794fafd271aa19b198e4d7`
+  Git LF blob SHA-256 `02c61d20af5fb3cbff943b790236861b341d04c6cdd08fc4b5b9d3ac5f1dbf68`
 - [Colab 2 T4 / system-prefix cache後](results/vago-cloud-text-colab-2t4-prefix-cache-10x-20260824.json) —
-  SHA-256 `7b7a6dc8389ce004ffc13dd42d25b4dae48afab915593c3e0f5fcf123bbe34a2`
+  Git LF blob SHA-256 `a896620121358ce137a80e0c5c27fb5c7fdb6b2ba7859b07c54693511f6bfc20`

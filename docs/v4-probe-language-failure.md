@@ -82,3 +82,24 @@ oracle rule上まだ旋回すべき位置だった。GPUを増やして判断帯
 2. prompt例と重ならないholdout点と境界両側を別suiteで測る
 3. prefix KV cacheを保ったまま、未見点へ一般化する教え方を探索する
 4. 失敗したらlocal補正で答えを直さず、policy失敗として記録する
+
+## 2026-08-24 解決編: 数字を捨て、意味を一tokenへ押し込んだ
+
+上の順でpromptを直したが、数値境界の説明や例を増やすほどholdoutが`3 / 6`まで崩れる版もあった。
+`WAIT / LEFT_SHORT / LEFT_LONG / RIGHT_SHORT / RIGHT_LONG / FIRE`を直接生成させる版は
+53問中48問まで改善した一方、completionが平均1.984 tokenになり、T4 computeが105 ms級から
+172.7 msへ増えた。意味は直ったが、FPSで一番高い税金をまた払っていた。
+
+そこで六操作を`wait / left / west / right / east / fire`へ符号化した。六語は全てtokenizer上1 token。
+53問は47正解、computeは109.4 msへ戻った。`west / east`は方角ではなくLONG旋回を一語にする筋肉コードで、
+local側は語を固定変換するだけである。
+
+しかし二T4・TTL 400 msの10本は平均3.3 killで、意味正答率53.53%の旧digit版4.8より弱かった。
+正答率を81.63%へ直しても、約0.28秒前の現在座標を正確に追うだけでは動的な敵へ間に合わない。
+逆に旧版の早すぎるFIREが雑な射撃leadとして働いた可能性がある。
+
+最終的にV5のaction ageを300 msで切ると平均4.6まで回復した。250 msでは正答率92.86%なのに
+操作の約8割が期限切れとなり平均1.4へ崩壊。運転免許の次に必要だったのは、**正しい答えを出す試験ではなく、
+正しい答えがまだ使える間だけ身体へ渡す賞味期限**だった。
+
+完全な比較は[One-token semantic motors](experiment-semantic-one-token-motors.md)に保存した。

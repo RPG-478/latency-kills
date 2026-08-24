@@ -1,0 +1,175 @@
+{
+  "experiment": "2 T4 NF4 semantic-words-v5, 40 ms observation, TTL 250 ms",
+  "seeds": [
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "conditions": {
+    "scenario": "defend_the_center",
+    "world_clock": "clock-thread",
+    "motor_body": "clock-thread",
+    "lanes": 2,
+    "observation_interval_seconds": 0.04,
+    "motor_token_max_age_ms": 250,
+    "motor_flat_pulse_ticks": 4,
+    "policy_ids": [
+      "semantic-words-v5"
+    ],
+    "quantizations": [
+      "bitsandbytes NF4, float16 compute"
+    ],
+    "observation_encodings": [
+      "semantic-direction"
+    ],
+    "motor_output_modes": [
+      "semantic-word"
+    ]
+  },
+  "aggregate": {
+    "runs": 5,
+    "valid_runs": 5,
+    "kills_total": 7,
+    "kills_mean": 1.4,
+    "kills_by_seed": [
+      1,
+      1,
+      1,
+      2,
+      2
+    ],
+    "decisions": 406,
+    "semantic_correct": 377,
+    "semantic_incorrect": 29,
+    "semantic_accuracy": 0.9285714285714286,
+    "wrong_fire_decisions": 19,
+    "request_errors": 0,
+    "mean_effective_tick_hz": 33.2356,
+    "decision_latency_ms": {
+      "count": 406,
+      "mean": 278.5073891614697,
+      "p50": 265.99999994505197,
+      "p95": 375.0,
+      "min": 202.9999999795109,
+      "max": 530.9999999590218
+    },
+    "remote_wire_ms": {
+      "count": 406,
+      "mean": 250.57881773395573,
+      "p50": 234.99999998603016,
+      "p95": 329.00000002700835,
+      "min": 187.99999996554106,
+      "max": 515.0000000139698
+    },
+    "server_compute_ms": {
+      "count": 406,
+      "mean": 109.42219475377605,
+      "p50": 108.40705500049808,
+      "p95": 122.41226600053778,
+      "min": 84.96308699977817,
+      "max": 129.09915299860586
+    },
+    "completion_tokens": {
+      "count": 406,
+      "mean": 1.0,
+      "p50": 1.0,
+      "p95": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "actual_actions": {
+      "FIRE": 124,
+      "LEFT_LONG": 1,
+      "LEFT_SHORT": 22,
+      "RIGHT_LONG": 245,
+      "RIGHT_SHORT": 14
+    },
+    "confusion_expected_to_actual": {
+      "FIRE": {
+        "FIRE": 105,
+        "LEFT_SHORT": 5
+      },
+      "LEFT_LONG": {
+        "LEFT_LONG": 1,
+        "LEFT_SHORT": 4
+      },
+      "LEFT_SHORT": {
+        "FIRE": 8,
+        "LEFT_SHORT": 13
+      },
+      "RIGHT_LONG": {
+        "RIGHT_LONG": 245,
+        "RIGHT_SHORT": 1
+      },
+      "RIGHT_SHORT": {
+        "FIRE": 11,
+        "RIGHT_SHORT": 13
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 7,
+      "run_directory": "20260824-160641-aa1d98ae",
+      "kills": 1,
+      "valid": true,
+      "decisions": 75,
+      "semantic_correct": 64,
+      "semantic_accuracy": 0.8533333333333334,
+      "request_errors": 0,
+      "effective_tick_hz": 33.905,
+      "duration_ms": 9438
+    },
+    {
+      "seed": 8,
+      "run_directory": "20260824-160654-416734b6",
+      "kills": 1,
+      "valid": true,
+      "decisions": 83,
+      "semantic_correct": 82,
+      "semantic_accuracy": 0.9879518072289156,
+      "request_errors": 0,
+      "effective_tick_hz": 33.108,
+      "duration_ms": 10813
+    },
+    {
+      "seed": 9,
+      "run_directory": "20260824-160707-f0d29300",
+      "kills": 1,
+      "valid": true,
+      "decisions": 74,
+      "semantic_correct": 74,
+      "semantic_accuracy": 1.0,
+      "request_errors": 0,
+      "effective_tick_hz": 32.05,
+      "duration_ms": 9922
+    },
+    {
+      "seed": 10,
+      "run_directory": "20260824-160719-4b669d68",
+      "kills": 2,
+      "valid": true,
+      "decisions": 86,
+      "semantic_correct": 76,
+      "semantic_accuracy": 0.8837209302325582,
+      "request_errors": 0,
+      "effective_tick_hz": 34.379,
+      "duration_ms": 10937
+    },
+    {
+      "seed": 11,
+      "run_directory": "20260824-160733-c2316c63",
+      "kills": 2,
+      "valid": true,
+      "decisions": 88,
+      "semantic_correct": 81,
+      "semantic_accuracy": 0.9204545454545454,
+      "request_errors": 0,
+      "effective_tick_hz": 32.736,
+      "duration_ms": 11547
+    }
+  ],
+  "summaries": null
+}

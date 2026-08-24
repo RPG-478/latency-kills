@@ -1,7 +1,43 @@
 # Three physical T4 lanes — 同じLLMをGPUごと三交代にする
 
 Status: **two physical T4 lanes measured on 2026-08-24**. The planned third
-runtime was rejected by Colab's concurrent-session limit.
+runtime was rejected by Colab's concurrent-session limit. A later semantic-policy
+ablation found that two lanes recover from 3.3 to **4.6 kills/game** when stale
+commands older than 300 ms are rejected.
+
+## 2026-08-24 追試: 二台を強くしたのは三台目ではなくTTLだった
+
+旧digit policyが未見座標で29 / 53まで落ちたため、入力を`DIRECTION + OFFSET`へ分け、
+出力を一語の`wait / left / west / right / east / fire`へ変えた。六語は全てLlama 3.1 8Bで
+1 tokenであり、local側は語を操作へ固定変換するだけで座標判断をしない。
+
+このV5は53座標で47 / 53、server compute 109.4 msまで改善したが、TTL 400 msの二laneでは
+平均3.3 kill。一laneの4.1より弱かった。throughputを増やす二台化が、時間差の古い旋回の競合まで
+増やしたと考えられる。
+
+そこでmodel、prompt、二T4、seedを固定し、action ageの上限だけを変えた。
+
+| semantic V5条件 | runs | kill平均 | 返答 | accept率 | 静的rule正答率 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 2 T4 / TTL 250 ms | 5 | 1.4 | 406 | 19.2% | 92.86% |
+| **2 T4 / TTL 300 ms** | **10** | **4.6** | **975** | **70.9%** | **83.69%** |
+| 2 T4 / TTL 350 ms | 5 | 3.6 | 487 | 87.7% | 83.57% |
+| 2 T4 / TTL 400 ms | 10 | 3.3 | 909 | 91.9% | 81.63% |
+| 1 T4 / TTL 400 ms | 10 | 4.1 | 464 | — | 85.34% |
+| 1 T4 / TTL 300 ms | 5 | 3.4 | 217 | 70.0% | 92.63% |
+
+250 msは返答の意味正答率が最も高いのに、約8割を期限切れとして捨てるため操作が飢えて最弱になった。
+400 msは供給量が多いが古い命令も通す。今回の分布では中間の300 msが46 kill、平均4.6で、同じ
+二lane / 400 msの33 killを13上回った。旧digit版の48 killには2届かない。
+ただし300−400 msのpaired bootstrap 95% intervalは`[-0.4, 3.1]`、exact sign-flipは`p=0.25`。
+10 seedの探索結果であり、優越が統計的に確定したとは扱わない。
+
+一台だけを300 msへ縮めた追加5本は平均3.4で、一台400 msの同じ5 seed平均5.0から低下した。
+一台300 msは152 actionしかacceptできず、二台300 msは334。今回の改善はTTL単独より、
+**二laneの供給量と300 msの鮮度cutを組み合わせた時**に現れた。
+
+詳しいpolicy比較、paired seed、V6の失敗、生ログは
+[One-token semantic motors](experiment-semantic-one-token-motors.md)へ分離した。
 
 ## 2026-08-24 実測結果
 
@@ -38,7 +74,7 @@ T4内部は約100〜111 msまで来たが、Cloudflare Quick Tunnelを含むwire
 
 raw CLI summary 30本は
 [`colab-t4-structured-30x-20260824.json`](results/colab-t4-structured-30x-20260824.json)
-（SHA-256 `3fc24f56b2a068f9b6882227ae7c6ee7f07fc7e4572ee7eafdbfe7073ce8f58b`）。
+（Git LF blob SHA-256 `bc72514794b4ba549dc0d354febaa0c1c746aaa8273ca0a47cb3b56cc318d65c`）。
 runtime bearer tokenとendpointは含めていない。
 
 ### 採用しない最初の1本
@@ -89,9 +125,9 @@ holdout座標を含むprobeとpolicyの修正が必要である。
 生ログ:
 
 - [20刻み53ケース・二lane](results/remote-motor-boundary-sweep-2t4-20260824.json) —
-  SHA-256 `8ced9b0ab7fa933573702944bdbb087f3f73908d785bdd90a6d85948162040f1`
+  Git LF blob SHA-256 `0fe1e541bfbd18942dae59552a3b2dd30dbb7fe245635247d559067fd71f3395`
 - [境界・probe近傍29ケース・二lane](results/remote-motor-probe-neighborhood-2t4-20260824.json) —
-  SHA-256 `b958aa9a6e2c35e4b7235c56adf0459a94aa79bd99fdd204fc9b01b321223c94`
+  Git LF blob SHA-256 `a61a28b01c67d35b7eccfda8904b20ef44cb5e6b173d189062676f6e1cfb5bb2`
 
 次版の起動試験はprompt例と同じ値を合格判定へ使わず、境界の両側、未見の区間内部、乱数seedを
 固定したholdout sweepを別に採点する。現在の6 / 6は後方互換のsmoke testとして残すが、

@@ -1,0 +1,290 @@
+{
+  "experiment": "remote V4 continuous decision-boundary sweep",
+  "x_min": -500,
+  "x_max": 500,
+  "x_step": 20,
+  "x_values": [
+    -222,
+    -221,
+    -220,
+    -219,
+    -82,
+    -81,
+    -80,
+    -79,
+    79,
+    80,
+    81,
+    82,
+    219,
+    220,
+    221,
+    222
+  ],
+  "lanes": [
+    {
+      "lane": "t4-3f1be9",
+      "health": {
+        "name": "t4-3f1be9",
+        "model": "meta-llama/Llama-3.1-8B-Instruct",
+        "gpu": "Tesla T4",
+        "quantization": "bitsandbytes NF4, float16 compute",
+        "constrained_digits": false,
+        "prefix_tokens": 317,
+        "policy_id": "semantic-action-v4",
+        "observation_encoding": "semantic-direction",
+        "motor_output_mode": "action-label",
+        "parallel_health_wall_ms": 922.0000000204891
+      },
+      "rows": [
+        {
+          "visible": 0,
+          "x": 9999,
+          "ammo": 10,
+          "expected": "4",
+          "expected_name": "RIGHT_LONG",
+          "actual": "4",
+          "actual_name": "RIGHT_LONG",
+          "correct": true,
+          "wire_ms": 390.99999994505197,
+          "server_compute_ms": 244.3793510001342
+        },
+        {
+          "visible": 1,
+          "x": 0,
+          "ammo": 0,
+          "expected": "0",
+          "expected_name": "WAIT",
+          "actual": "0",
+          "actual_name": "WAIT",
+          "correct": true,
+          "wire_ms": 250.0,
+          "server_compute_ms": 103.62502499992843
+        },
+        {
+          "visible": 1,
+          "x": -222,
+          "ammo": 10,
+          "expected": "2",
+          "expected_name": "LEFT_LONG",
+          "actual": "1",
+          "actual_name": "LEFT_SHORT",
+          "correct": false,
+          "wire_ms": 295.99999997299165,
+          "server_compute_ms": 170.4441379997661
+        },
+        {
+          "visible": 1,
+          "x": -221,
+          "ammo": 10,
+          "expected": "2",
+          "expected_name": "LEFT_LONG",
+          "actual": "2",
+          "actual_name": "LEFT_LONG",
+          "correct": true,
+          "wire_ms": 297.0000000204891,
+          "server_compute_ms": 176.3199800006987
+        },
+        {
+          "visible": 1,
+          "x": -220,
+          "ammo": 10,
+          "expected": "1",
+          "expected_name": "LEFT_SHORT",
+          "actual": "1",
+          "actual_name": "LEFT_SHORT",
+          "correct": true,
+          "wire_ms": 391.0000000614673,
+          "server_compute_ms": 158.5290150005676
+        },
+        {
+          "visible": 1,
+          "x": -219,
+          "ammo": 10,
+          "expected": "1",
+          "expected_name": "LEFT_SHORT",
+          "actual": "1",
+          "actual_name": "LEFT_SHORT",
+          "correct": true,
+          "wire_ms": 343.99999992456287,
+          "server_compute_ms": 167.51982000005228
+        },
+        {
+          "visible": 1,
+          "x": -82,
+          "ammo": 10,
+          "expected": "1",
+          "expected_name": "LEFT_SHORT",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": false,
+          "wire_ms": 297.0000000204891,
+          "server_compute_ms": 162.47212199959904
+        },
+        {
+          "visible": 1,
+          "x": -81,
+          "ammo": 10,
+          "expected": "1",
+          "expected_name": "LEFT_SHORT",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": false,
+          "wire_ms": 390.00000001396984,
+          "server_compute_ms": 160.4256090004128
+        },
+        {
+          "visible": 1,
+          "x": -80,
+          "ammo": 10,
+          "expected": "5",
+          "expected_name": "FIRE",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": true,
+          "wire_ms": 280.9999999590218,
+          "server_compute_ms": 166.82392900020204
+        },
+        {
+          "visible": 1,
+          "x": -79,
+          "ammo": 10,
+          "expected": "5",
+          "expected_name": "FIRE",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": true,
+          "wire_ms": 313.0000000819564,
+          "server_compute_ms": 160.65904199967918
+        },
+        {
+          "visible": 1,
+          "x": 79,
+          "ammo": 10,
+          "expected": "5",
+          "expected_name": "FIRE",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": true,
+          "wire_ms": 343.99999992456287,
+          "server_compute_ms": 159.9252969999725
+        },
+        {
+          "visible": 1,
+          "x": 80,
+          "ammo": 10,
+          "expected": "5",
+          "expected_name": "FIRE",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": true,
+          "wire_ms": 484.00000005494803,
+          "server_compute_ms": 168.2280079994598
+        },
+        {
+          "visible": 1,
+          "x": 81,
+          "ammo": 10,
+          "expected": "3",
+          "expected_name": "RIGHT_SHORT",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": false,
+          "wire_ms": 312.99999996554106,
+          "server_compute_ms": 167.19931099942187
+        },
+        {
+          "visible": 1,
+          "x": 82,
+          "ammo": 10,
+          "expected": "3",
+          "expected_name": "RIGHT_SHORT",
+          "actual": "5",
+          "actual_name": "FIRE",
+          "correct": false,
+          "wire_ms": 359.00000005494803,
+          "server_compute_ms": 176.90699699960533
+        },
+        {
+          "visible": 1,
+          "x": 219,
+          "ammo": 10,
+          "expected": "3",
+          "expected_name": "RIGHT_SHORT",
+          "actual": "3",
+          "actual_name": "RIGHT_SHORT",
+          "correct": true,
+          "wire_ms": 296.9999999040738,
+          "server_compute_ms": 162.23030099990865
+        },
+        {
+          "visible": 1,
+          "x": 220,
+          "ammo": 10,
+          "expected": "3",
+          "expected_name": "RIGHT_SHORT",
+          "actual": "3",
+          "actual_name": "RIGHT_SHORT",
+          "correct": true,
+          "wire_ms": 312.00000003445894,
+          "server_compute_ms": 161.7670799996631
+        },
+        {
+          "visible": 1,
+          "x": 221,
+          "ammo": 10,
+          "expected": "4",
+          "expected_name": "RIGHT_LONG",
+          "actual": "3",
+          "actual_name": "RIGHT_SHORT",
+          "correct": false,
+          "wire_ms": 297.0000000204891,
+          "server_compute_ms": 162.58050200030993
+        },
+        {
+          "visible": 1,
+          "x": 222,
+          "ammo": 10,
+          "expected": "4",
+          "expected_name": "RIGHT_LONG",
+          "actual": "3",
+          "actual_name": "RIGHT_SHORT",
+          "correct": false,
+          "wire_ms": 297.0000000204891,
+          "server_compute_ms": 167.53214199979993
+        }
+      ],
+      "correct": 11,
+      "total": 18,
+      "client": {
+        "lane_count": 1,
+        "lanes": [
+          {
+            "name": "t4-3f1be9",
+            "requests": 18,
+            "failures": 0,
+            "wire_ms": {
+              "count": 18,
+              "mean": 330.72222222108394,
+              "p50": 312.5,
+              "p95": 484.00000005494803
+            },
+            "server_compute_ms": {
+              "count": 18,
+              "mean": 166.5315371666212,
+              "p50": 164.702215500256,
+              "p95": 244.3793510001342
+            },
+            "server_queue_ms": {
+              "count": 18,
+              "mean": 0.0010977776380766751,
+              "p50": 0.0010554999789746944,
+              "p95": 0.001562999386806041
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "lane_agreement": null
+}

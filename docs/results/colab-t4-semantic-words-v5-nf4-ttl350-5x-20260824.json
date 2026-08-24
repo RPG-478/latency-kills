@@ -1,0 +1,176 @@
+{
+  "experiment": "2 T4 NF4 semantic-words-v5, 40 ms observation, TTL 350 ms",
+  "seeds": [
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "conditions": {
+    "scenario": "defend_the_center",
+    "world_clock": "clock-thread",
+    "motor_body": "clock-thread",
+    "lanes": 2,
+    "observation_interval_seconds": 0.04,
+    "motor_token_max_age_ms": 350,
+    "motor_flat_pulse_ticks": 4,
+    "policy_ids": [
+      "semantic-words-v5"
+    ],
+    "quantizations": [
+      "bitsandbytes NF4, float16 compute"
+    ],
+    "observation_encodings": [
+      "semantic-direction"
+    ],
+    "motor_output_modes": [
+      "semantic-word"
+    ]
+  },
+  "aggregate": {
+    "runs": 5,
+    "valid_runs": 5,
+    "kills_total": 18,
+    "kills_mean": 3.6,
+    "kills_by_seed": [
+      4,
+      2,
+      3,
+      5,
+      4
+    ],
+    "decisions": 487,
+    "semantic_correct": 407,
+    "semantic_incorrect": 80,
+    "semantic_accuracy": 0.8357289527720739,
+    "wrong_fire_decisions": 22,
+    "request_errors": 0,
+    "mean_effective_tick_hz": 33.432,
+    "decision_latency_ms": {
+      "count": 487,
+      "mean": 276.59958932554497,
+      "p50": 265.99999994505197,
+      "p95": 359.00000005494803,
+      "min": 187.00000003445894,
+      "max": 563.0000000819564
+    },
+    "remote_wire_ms": {
+      "count": 487,
+      "mean": 249.45585215435548,
+      "p50": 234.99999998603016,
+      "p95": 327.9999999795109,
+      "min": 187.00000003445894,
+      "max": 516.0000000614673
+    },
+    "server_compute_ms": {
+      "count": 487,
+      "mean": 110.06792677617864,
+      "p50": 109.52208100025018,
+      "p95": 122.19363900112512,
+      "min": 86.79905600001803,
+      "max": 129.6791739987384
+    },
+    "completion_tokens": {
+      "count": 487,
+      "mean": 1.0,
+      "p50": 1.0,
+      "p95": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "actual_actions": {
+      "FIRE": 114,
+      "LEFT_LONG": 24,
+      "LEFT_SHORT": 91,
+      "RIGHT_LONG": 173,
+      "RIGHT_SHORT": 85
+    },
+    "confusion_expected_to_actual": {
+      "FIRE": {
+        "FIRE": 92,
+        "LEFT_SHORT": 3
+      },
+      "LEFT_LONG": {
+        "LEFT_LONG": 24,
+        "LEFT_SHORT": 29,
+        "RIGHT_LONG": 7
+      },
+      "LEFT_SHORT": {
+        "FIRE": 8,
+        "LEFT_SHORT": 59
+      },
+      "RIGHT_LONG": {
+        "RIGHT_LONG": 166,
+        "RIGHT_SHORT": 19
+      },
+      "RIGHT_SHORT": {
+        "FIRE": 14,
+        "RIGHT_SHORT": 66
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 7,
+      "run_directory": "20260824-160813-89e409bc",
+      "kills": 4,
+      "valid": true,
+      "decisions": 101,
+      "semantic_correct": 92,
+      "semantic_accuracy": 0.9108910891089109,
+      "request_errors": 0,
+      "effective_tick_hz": 33.358,
+      "duration_ms": 13250
+    },
+    {
+      "seed": 8,
+      "run_directory": "20260824-160829-e1527d65",
+      "kills": 2,
+      "valid": true,
+      "decisions": 83,
+      "semantic_correct": 70,
+      "semantic_accuracy": 0.8433734939759037,
+      "request_errors": 0,
+      "effective_tick_hz": 33.493,
+      "duration_ms": 11047
+    },
+    {
+      "seed": 9,
+      "run_directory": "20260824-160843-fd027a41",
+      "kills": 3,
+      "valid": true,
+      "decisions": 101,
+      "semantic_correct": 76,
+      "semantic_accuracy": 0.7524752475247525,
+      "request_errors": 0,
+      "effective_tick_hz": 33.398,
+      "duration_ms": 12875
+    },
+    {
+      "seed": 10,
+      "run_directory": "20260824-160858-ace1ddf0",
+      "kills": 5,
+      "valid": true,
+      "decisions": 114,
+      "semantic_correct": 94,
+      "semantic_accuracy": 0.8245614035087719,
+      "request_errors": 0,
+      "effective_tick_hz": 32.933,
+      "duration_ms": 15000
+    },
+    {
+      "seed": 11,
+      "run_directory": "20260824-160915-8963defd",
+      "kills": 4,
+      "valid": true,
+      "decisions": 88,
+      "semantic_correct": 75,
+      "semantic_accuracy": 0.8522727272727273,
+      "request_errors": 0,
+      "effective_tick_hz": 33.978,
+      "duration_ms": 11125
+    }
+  ],
+  "summaries": null
+}

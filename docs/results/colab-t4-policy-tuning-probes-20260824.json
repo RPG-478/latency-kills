@@ -1,0 +1,81 @@
+{
+  "date": "2026-08-24",
+  "status": "exploratory runtime probes",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "hardware": "Google Colab Tesla T4",
+  "note": "These small holdout suites were printed by the live Colab policy cells while selecting a policy. They are not game scores. Full coordinate sweeps and game artifacts are stored as separate JSON files.",
+  "variants": [
+    {
+      "policy_id": "numeric-boundaries-v2",
+      "quantization": "NF4",
+      "holdout_correct": 3,
+      "holdout_total": 6,
+      "decision": "rejected"
+    },
+    {
+      "policy_id": "semantic-direction-v3",
+      "quantization": "NF4",
+      "holdout_correct": 4,
+      "holdout_total": 6,
+      "decision": "rejected"
+    },
+    {
+      "policy_id": "semantic-direction-v3",
+      "quantization": "LLM.int8",
+      "holdout_correct": 5,
+      "holdout_total": 6,
+      "decision": "rejected: slower and still incorrect"
+    },
+    {
+      "policy_id": "semantic-direction-v3-center",
+      "quantization": "LLM.int8",
+      "holdout_correct": 3,
+      "holdout_total": 6,
+      "decision": "rejected: extra center examples destabilized the policy"
+    },
+    {
+      "policy_id": "semantic-action-v4",
+      "quantization": "NF4",
+      "holdout_correct": 6,
+      "holdout_total": 6,
+      "decision": "measured in coordinate sweeps and ten game episodes"
+    },
+    {
+      "policy_id": "semantic-action-v4",
+      "quantization": "LLM.int8",
+      "holdout_correct": 6,
+      "holdout_total": 6,
+      "decision": "rejected: approximately twice the NF4 server compute"
+    },
+    {
+      "policy_id": "semantic-action-v4-boundaries",
+      "quantization": "NF4",
+      "holdout_correct": 5,
+      "holdout_total": 6,
+      "decision": "rejected: adding exact boundary examples regressed the holdout"
+    },
+    {
+      "policy_id": "semantic-words-v5",
+      "quantization": "NF4",
+      "holdout_correct": 6,
+      "holdout_total": 6,
+      "decision": "selected: all six motor words are one tokenizer token"
+    },
+    {
+      "policy_id": "semantic-words-v6-lead",
+      "quantization": "NF4",
+      "holdout_correct": 5,
+      "holdout_total": 6,
+      "decision": "rejected: the verbose delay explanation flipped a far-left action"
+    },
+    {
+      "policy_id": "semantic-words-v6-lead-simple",
+      "quantization": "NF4",
+      "holdout_correct": 5,
+      "holdout_total": 6,
+      "motor_coverage_correct": 6,
+      "motor_coverage_total": 6,
+      "decision": "rejected after a 36/53 coordinate sweep and three paired game episodes"
+    }
+  ]
+}
