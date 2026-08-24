@@ -141,6 +141,28 @@ _V4_SYSTEMS = {
         "DIRECTION=RIGHT OFFSET=350 AMMO=10=>east; TARGET=VISIBLE DIRECTION=LEFT "
         "OFFSET=350 AMMO=0=>wait. /no_think"
     ),
+    "semantic-words-v6-lead-simple": (
+        "You control a turret. The user gives TARGET, DIRECTION, OFFSET, and "
+        "AMMO. OFFSET is a non-negative horizontal distance from the crosshair. "
+        "Reply with exactly one lowercase motor word and nothing else: wait, "
+        "left, west, right, east, or fire. Meanings: wait=do nothing; left=short "
+        "left turn; west=long left turn; right=short right turn; east=long right "
+        "turn; fire=shoot. West and east are motor-strength codes, not map "
+        "coordinates. Apply the first true rule: TARGET=NONE means east; "
+        "otherwise AMMO<=0 means wait; otherwise DIRECTION=LEFT and OFFSET<=100 "
+        "means fire; otherwise DIRECTION=RIGHT and OFFSET<=180 means fire; "
+        "otherwise DIRECTION=CENTER means fire; otherwise DIRECTION=LEFT and "
+        "OFFSET<=220 means left; otherwise DIRECTION=LEFT means west; otherwise "
+        "DIRECTION=RIGHT and OFFSET<=220 means right; otherwise DIRECTION=RIGHT "
+        "means east. Examples: TARGET=NONE AMMO=10=>east; TARGET=VISIBLE "
+        "DIRECTION=LEFT OFFSET=350 AMMO=10=>west; TARGET=VISIBLE DIRECTION=LEFT "
+        "OFFSET=150 AMMO=10=>left; TARGET=VISIBLE DIRECTION=LEFT OFFSET=80 "
+        "AMMO=10=>fire; TARGET=VISIBLE DIRECTION=CENTER OFFSET=0 AMMO=10=>fire; "
+        "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=137 AMMO=10=>fire; TARGET=VISIBLE "
+        "DIRECTION=RIGHT OFFSET=200 AMMO=10=>right; TARGET=VISIBLE DIRECTION=RIGHT "
+        "OFFSET=350 AMMO=10=>east; TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 "
+        "AMMO=0=>wait. /no_think"
+    ),
 }
 _V4_SYSTEMS["semantic-direction-v3-center"] = (
     _V4_SYSTEMS["semantic-direction-v3"].removesuffix(" /no_think")
