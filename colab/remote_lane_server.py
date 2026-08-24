@@ -78,6 +78,25 @@ _V4_SYSTEMS = {
         "VISIBLE RIGHT OFFSET=350 AMMO=10=>4; VISIBLE RIGHT OFFSET=700 AMMO=10=>4; "
         "VISIBLE LEFT OFFSET=350 AMMO=0=>0. /no_think"
     ),
+    "semantic-action-v4": (
+        "You control a turret. The user gives TARGET, DIRECTION, OFFSET, and "
+        "AMMO. OFFSET is a non-negative horizontal distance from the crosshair. "
+        "Reply with exactly one uppercase action label and nothing else: WAIT, "
+        "LEFT_SHORT, LEFT_LONG, RIGHT_SHORT, RIGHT_LONG, or FIRE. Apply the "
+        "first true rule: TARGET=NONE means RIGHT_LONG; otherwise AMMO<=0 means "
+        "WAIT; otherwise OFFSET<=80 means FIRE; otherwise DIRECTION=LEFT and "
+        "OFFSET<=220 means LEFT_SHORT; otherwise DIRECTION=LEFT means LEFT_LONG; "
+        "otherwise DIRECTION=RIGHT and OFFSET<=220 means RIGHT_SHORT; otherwise "
+        "DIRECTION=RIGHT means RIGHT_LONG. Examples: TARGET=NONE AMMO=10=>RIGHT_LONG; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 AMMO=10=>LEFT_LONG; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=150 AMMO=10=>LEFT_SHORT; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=40 AMMO=10=>FIRE; "
+        "TARGET=VISIBLE DIRECTION=CENTER OFFSET=0 AMMO=10=>FIRE; "
+        "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=40 AMMO=10=>FIRE; "
+        "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=150 AMMO=10=>RIGHT_SHORT; "
+        "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=350 AMMO=10=>RIGHT_LONG; "
+        "TARGET=VISIBLE DIRECTION=LEFT OFFSET=350 AMMO=0=>WAIT. /no_think"
+    ),
 }
 _V4_SYSTEMS["semantic-direction-v3-center"] = (
     _V4_SYSTEMS["semantic-direction-v3"].removesuffix(" /no_think")
@@ -92,7 +111,7 @@ _V4_SYSTEMS["semantic-direction-v3-center"] = (
     "TARGET=VISIBLE DIRECTION=RIGHT OFFSET=79 AMMO=10=>5. /no_think"
 )
 V4_POLICY_ID = os.environ.get(
-    "LATENCY_KILLS_V4_POLICY", "semantic-direction-v3-center"
+    "LATENCY_KILLS_V4_POLICY", "semantic-action-v4"
 ).strip()
 try:
     V4_SYSTEM = _V4_SYSTEMS[V4_POLICY_ID]
@@ -173,7 +192,10 @@ HF_TOKEN = ""
 
 
 def _model_observation(observation: str) -> str:
-    if not V4_POLICY_ID.startswith("semantic-direction-v3"):
+    if not (
+        V4_POLICY_ID.startswith("semantic-direction-v3")
+        or V4_POLICY_ID == "semantic-action-v4"
+    ):
         return observation
     visible, x, ammo = _observation(observation)
     if visible == 0:
@@ -237,7 +259,17 @@ _vago_cached_prefix_ids: torch.Tensor | None = None
 _vago_cached_prefix: Any | None = None
 
 
-def _infer(observation: str) -> tuple[str, float, int]:
+_ACTION_WORD_TO_TOKEN = {
+    "WAIT": "0",
+    "LEFT_SHORT": "1",
+    "LEFT_LONG": "2",
+    "RIGHT_SHORT": "3",
+    "RIGHT_LONG": "4",
+    "FIRE": "5",
+}
+
+
+def _infer(observation: str) -> tuple[str, float, int, str, int]:
     started = time.perf_counter()
     full_ids = _chat_ids(observation)
     suffix = full_ids[:, _prefix_len:]
@@ -256,20 +288,64 @@ def _infer(observation: str) -> tuple[str, float, int]:
                 past_key_values=_cache,
                 use_cache=True,
             )
-            next_logits = output.logits[0, -1]
-            if CONSTRAIN_DIGITS:
-                digit_logits = next_logits[_digit_ids]
-                chosen_id = _digit_ids[int(digit_logits.argmax().item())]
+            if V4_POLICY_ID == "semantic-action-v4":
+                completion_ids: list[int] = []
+                decision_text = ""
+                chosen_token: str | None = None
+                for _ in range(8):
+                    next_id = int(output.logits[0, -1].argmax().item())
+                    completion_ids.append(next_id)
+                    decision_text = tokenizer.decode(
+                        completion_ids, skip_special_tokens=True
+                    ).strip().upper()
+                    chosen_token = _ACTION_WORD_TO_TOKEN.get(decision_text)
+                    if chosen_token is not None:
+                        break
+                    if next_id == tokenizer.eos_token_id:
+                        break
+                    next_tensor = torch.tensor(
+                        [[next_id]], device=model.device, dtype=torch.long
+                    )
+                    attention_mask = torch.cat(
+                        (
+                            attention_mask,
+                            torch.ones(
+                                (1, 1), device=model.device, dtype=torch.long
+                            ),
+                        ),
+                        dim=-1,
+                    )
+                    output = model(
+                        input_ids=next_tensor,
+                        attention_mask=attention_mask,
+                        past_key_values=_cache,
+                        use_cache=True,
+                    )
+                if chosen_token is None:
+                    raise HTTPException(
+                        status_code=422,
+                        detail="model did not emit one exact motor action label",
+                    )
+                completion_tokens = len(completion_ids)
             else:
-                chosen_id = int(next_logits.argmax().item())
+                next_logits = output.logits[0, -1]
+                if CONSTRAIN_DIGITS:
+                    digit_logits = next_logits[_digit_ids]
+                    chosen_id = _digit_ids[int(digit_logits.argmax().item())]
+                else:
+                    chosen_id = int(next_logits.argmax().item())
+                decision_text = tokenizer.decode(
+                    [chosen_id], skip_special_tokens=True
+                ).strip()
+                chosen_token = decision_text
+                completion_tokens = 1
             torch.cuda.synchronize()
     finally:
         _cache.crop(_prefix_len)
     compute_ms = (time.perf_counter() - started) * 1000.0
-    decoded = tokenizer.decode([chosen_id], skip_special_tokens=True).strip()
-    if len(decoded) != 1 or decoded not in "012345":
+    if len(chosen_token) != 1 or chosen_token not in "012345":
         raise HTTPException(status_code=422, detail="model did not emit a motor digit")
-    return decoded, compute_ms, suffix_len
+    return chosen_token, compute_ms, suffix_len, decision_text, completion_tokens
 
 
 def _vago_prefix(system_prompt: str) -> tuple[torch.Tensor, Any]:
@@ -429,8 +505,14 @@ def health() -> dict[str, Any]:
         "policy_id": V4_POLICY_ID,
         "observation_encoding": (
             "semantic-direction"
-            if V4_POLICY_ID.startswith("semantic-direction-v3")
+            if (
+                V4_POLICY_ID.startswith("semantic-direction-v3")
+                or V4_POLICY_ID == "semantic-action-v4"
+            )
             else "raw"
+        ),
+        "motor_output_mode": (
+            "action-label" if V4_POLICY_ID == "semantic-action-v4" else "digit"
         ),
         "prefix_tokens": _prefix_len,
         "load_seconds": round(LOAD_SECONDS, 3),
@@ -444,7 +526,9 @@ def motor(request: MotorRequest) -> dict[str, Any]:
     queued_at = time.perf_counter()
     with _inference_lock:
         acquired_at = time.perf_counter()
-        token, compute_ms, suffix_tokens = _infer(request.observation)
+        token, compute_ms, suffix_tokens, decision_text, completion_tokens = _infer(
+            request.observation
+        )
     return {
         "request_id": request.request_id,
         "token": token,
@@ -453,6 +537,9 @@ def motor(request: MotorRequest) -> dict[str, Any]:
         "queue_ms": (acquired_at - queued_at) * 1000.0,
         "compute_ms": compute_ms,
         "suffix_tokens": suffix_tokens,
+        "decision_text": decision_text,
+        "completion_tokens": completion_tokens,
+        "policy_id": V4_POLICY_ID,
         "constrained_digits": CONSTRAIN_DIGITS,
     }
 

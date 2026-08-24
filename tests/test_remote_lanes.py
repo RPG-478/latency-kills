@@ -98,6 +98,9 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
                         "quantization": "NF4",
                         "constrained_digits": False,
                         "prefix_tokens": 123,
+                        "policy_id": "semantic-action-v4",
+                        "observation_encoding": "semantic-direction",
+                        "motor_output_mode": "action-label",
                     },
                 )
             seen_hosts.append(host)
@@ -114,6 +117,9 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
                     "queue_ms": 0.1,
                     "suffix_tokens": 18,
                     "constrained_digits": False,
+                    "policy_id": "semantic-action-v4",
+                    "decision_text": "FIRE" if token == "5" else "RIGHT_LONG",
+                    "completion_tokens": 3,
                 },
             )
 
@@ -130,6 +136,9 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
         try:
             health = await client.warmup()
             assert len(health) == 2
+            assert {row["policy_id"] for row in health} == {
+                "semantic-action-v4"
+            }
             results = await asyncio.gather(
                 client.stream_motor(
                     observation_text="v=1 x=0 a=10",
@@ -152,6 +161,11 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
         assert {result.provider for result in results} == {
             "remote-colab/t4-a",
             "remote-colab/t4-b",
+        }
+        assert {result.usage["completion_tokens"] for result in results} == {3}
+        assert {result.usage["decision_text"] for result in results} == {
+            "FIRE",
+            "RIGHT_LONG",
         }
         snapshot = client.snapshot()
         assert [lane["requests"] for lane in snapshot["lanes"]] == [1, 1]

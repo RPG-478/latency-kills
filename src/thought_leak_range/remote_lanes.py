@@ -196,6 +196,13 @@ class RemoteLanePoolClient:
                 "quantization": _optional_text(payload.get("quantization")),
                 "constrained_digits": bool(payload.get("constrained_digits")),
                 "prefix_tokens": _nonnegative_int(payload.get("prefix_tokens")),
+                "policy_id": _optional_text(payload.get("policy_id")),
+                "observation_encoding": _optional_text(
+                    payload.get("observation_encoding")
+                ),
+                "motor_output_mode": _optional_text(
+                    payload.get("motor_output_mode")
+                ),
             }
 
         rows = await asyncio.gather(*(check(i) for i in range(self.lane_count)))
@@ -269,6 +276,11 @@ class RemoteLanePoolClient:
                 "server_queue_ms": queue_ms,
                 "suffix_tokens": _nonnegative_int(payload.get("suffix_tokens")),
                 "constrained_digits": bool(payload.get("constrained_digits")),
+                "policy_id": _optional_text(payload.get("policy_id")),
+                "decision_text": _optional_text(payload.get("decision_text")),
+                "completion_tokens": _nonnegative_int(
+                    payload.get("completion_tokens")
+                ),
             }
             return StreamResult(
                 response_id=_optional_text(payload.get("request_id")) or request_id,
