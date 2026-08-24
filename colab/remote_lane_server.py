@@ -27,6 +27,9 @@ CONSTRAIN_DIGITS = os.environ.get(
     "LATENCY_KILLS_CONSTRAIN_DIGITS", "0"
 ).strip().lower() in {"1", "true", "yes"}
 HF_TOKEN = os.environ.get("HF_TOKEN", "").strip()
+QUANTIZATION_MODE = os.environ.get(
+    "LATENCY_KILLS_QUANTIZATION", "nf4"
+).strip().lower()
 
 _V4_SYSTEMS = {
     "baseline-canonical-v1": (
@@ -124,12 +127,21 @@ def _observation(text: str) -> tuple[int, int, int]:
     return visible, x, ammo
 
 
-_quantization = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.float16,
-    bnb_4bit_use_double_quant=True,
-)
+if QUANTIZATION_MODE == "nf4":
+    _quantization = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.float16,
+        bnb_4bit_use_double_quant=True,
+    )
+    _quantization_label = "bitsandbytes NF4, float16 compute"
+elif QUANTIZATION_MODE == "int8":
+    _quantization = BitsAndBytesConfig(load_in_8bit=True)
+    _quantization_label = "bitsandbytes LLM.int8"
+else:
+    raise RuntimeError(
+        "LATENCY_KILLS_QUANTIZATION must be either 'nf4' or 'int8'"
+    )
 _load_started = time.perf_counter()
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=HF_TOKEN)
 if tokenizer.pad_token is None:
@@ -400,7 +412,7 @@ def health() -> dict[str, Any]:
         "lane": LANE_NAME,
         "model": MODEL_ID,
         "gpu": torch.cuda.get_device_name(0),
-        "quantization": "bitsandbytes NF4, float16 compute",
+        "quantization": _quantization_label,
         "constrained_digits": CONSTRAIN_DIGITS,
         "policy_id": V4_POLICY_ID,
         "observation_encoding": (
