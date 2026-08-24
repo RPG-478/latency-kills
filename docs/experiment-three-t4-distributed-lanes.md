@@ -2,6 +2,23 @@
 
 Status: implementation ready; live Colab run pending.
 
+## 2026-08-24 runtime起動前のbrowser failure
+
+ユーザーからT4三台、Colab dependency導入、Colab Secretsの`HF_TOKEN`送信についてaction-time
+confirmationを得た後、三notebookの起動を試みた。しかしruntime接続前にブラウザ制御層が停止した。
+
+- in-app browserの永続Node sessionはreset後も`failed to write kernel assets (os error 3)`。
+- ChatGPT app本体をWindows UI automationで触ることは禁止されているため、その迂回は不採用。
+- 既存Chrome profileをPlaywrightで直接開くと接続が成立せず、起動したabout:blank processは
+  開始時刻とPIDを照合して終了した。
+- profileの一時copyではGoogleのdevice-bound sessionが移らずlogin画面になった。credential入力は
+  自動化せず停止し、一時copy 591.3 MBはRecycle Binへ送り、元profileは変更していない。
+- local debug付きChrome起動はsecurity policyで拒否されたため、回避しなかった。
+
+この時点で**Colab runtimeは0台、消費CUは0**。notebook、Drive上のA/B/C copy、remote server、
+OpenRouter smoke/10-runはすでに準備済みで、ブラウザ制御helper復旧またはユーザーによるGoogle login後に
+`Run all`から再開できる。
+
 ## 発端
 
 一台のGoogle Colab T4へLlama 3.1 8B Instructを4-bit NF4で置き、固定system
@@ -86,4 +103,3 @@ public tunnelの往復を含む`wire_ms`と、T4内部の`server_compute_ms`を�
 
 どの結果でも、巨大モデル対小型モデルという比較から、**知能・遅延・更新頻度・入力難度を
 別々に測る**方向へ研究を一段進められる。
-
