@@ -38,7 +38,9 @@ def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def analyze(runs_dir: Path, *, label: str) -> dict[str, Any]:
+def analyze(
+    runs_dir: Path, *, label: str, include_summaries: bool = True
+) -> dict[str, Any]:
     records: list[dict[str, Any]] = []
     latencies: list[float] = []
     wire_ms: list[float] = []
@@ -48,10 +50,10 @@ def analyze(runs_dir: Path, *, label: str) -> dict[str, Any]:
     actual_actions: Counter[str] = Counter()
     per_seed: list[dict[str, Any]] = []
 
-    for directory in sorted(path for path in runs_dir.iterdir() if path.is_dir()):
-        summary_path = directory / "summary.json"
+    for summary_path in sorted(runs_dir.rglob("summary.json")):
+        directory = summary_path.parent
         events_path = directory / "events.jsonl"
-        if not summary_path.is_file() or not events_path.is_file():
+        if not events_path.is_file():
             continue
         summary = _load_json(summary_path)
         records.append(summary)
@@ -79,7 +81,7 @@ def analyze(runs_dir: Path, *, label: str) -> dict[str, Any]:
         per_seed.append(
             {
                 "seed": int(summary["seed"]),
-                "run_directory": directory.name,
+                "run_directory": directory.relative_to(runs_dir).as_posix(),
                 "kills": int(range_summary["final_observation"]["kills"]),
                 "valid": bool(range_summary["comparison_valid"]),
                 "decisions": decisions,
@@ -176,7 +178,7 @@ def analyze(runs_dir: Path, *, label: str) -> dict[str, Any]:
             },
         },
         "per_seed": per_seed,
-        "summaries": records,
+        "summaries": records if include_summaries else None,
     }
 
 
@@ -185,8 +187,17 @@ def main() -> None:
     parser.add_argument("--runs-dir", type=Path, required=True)
     parser.add_argument("--label", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--omit-summaries",
+        action="store_true",
+        help="write aggregate and per-seed rows without duplicating full summaries",
+    )
     args = parser.parse_args()
-    result = analyze(args.runs_dir, label=args.label)
+    result = analyze(
+        args.runs_dir,
+        label=args.label,
+        include_summaries=not args.omit_summaries,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
