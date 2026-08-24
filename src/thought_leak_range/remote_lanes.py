@@ -136,6 +136,10 @@ class RemoteLanePoolClient:
     ) -> None:
         if not configs:
             raise ValueError("at least one remote lane is required")
+        # Probe/event code records ``client.model`` for every pilot.  Remote
+        # lanes are a pool rather than one hosted model, but still need a
+        # stable, non-secret label for the shared instrumentation path.
+        self.model = "remote-lane-pool"
         self.configs = configs
         self._clients = tuple(
             httpx.AsyncClient(

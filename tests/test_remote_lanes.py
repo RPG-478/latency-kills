@@ -120,6 +120,7 @@ def test_remote_lane_pool_uses_each_physical_endpoint() -> None:
             configs,
             transport=httpx.MockTransport(handler),
         )
+        assert client.model == "remote-lane-pool"
         visible: list[str] = []
         try:
             health = await client.warmup()

@@ -143,6 +143,9 @@ if not hasattr(_cache, "crop"):
     raise RuntimeError("this Transformers cache cannot be restored after a suffix")
 
 _inference_lock = threading.Lock()
+_vago_cached_system_prompt: str | None = None
+_vago_cached_prefix_ids: torch.Tensor | None = None
+_vago_cached_prefix: Any | None = None
 
 
 def _infer(observation: str) -> tuple[str, float, int]:
@@ -180,6 +183,39 @@ def _infer(observation: str) -> tuple[str, float, int]:
     return decoded, compute_ms, suffix_len
 
 
+def _vago_prefix(system_prompt: str) -> tuple[torch.Tensor, Any]:
+    """Cache exactly one VAGO system prefix; requests are serialized per lane."""
+
+    global _vago_cached_prefix, _vago_cached_prefix_ids, _vago_cached_system_prompt
+    if (
+        _vago_cached_system_prompt == system_prompt
+        and _vago_cached_prefix_ids is not None
+        and _vago_cached_prefix is not None
+    ):
+        return _vago_cached_prefix_ids, _vago_cached_prefix
+
+    prefix_batch = tokenizer.apply_chat_template(
+        [{"role": "system", "content": system_prompt}],
+        tokenize=True,
+        add_generation_prompt=False,
+        return_tensors="pt",
+        return_dict=True,
+    )
+    prefix_ids = prefix_batch["input_ids"].to(model.device)
+    with torch.inference_mode():
+        prefix_cache = model(
+            input_ids=prefix_ids,
+            attention_mask=torch.ones_like(prefix_ids),
+            use_cache=True,
+        ).past_key_values
+    if not hasattr(prefix_cache, "crop"):
+        raise RuntimeError("this Transformers cache cannot restore a VAGO prefix")
+    _vago_cached_system_prompt = system_prompt
+    _vago_cached_prefix_ids = prefix_ids
+    _vago_cached_prefix = prefix_cache
+    return prefix_ids, prefix_cache
+
+
 _VAGO_ACTIONS = ("shoot", "move_forward", "turn_left", "turn_right")
 _VAGO_BUTTONS = {
     "shoot": (1, 0, 0, 0),
@@ -211,8 +247,10 @@ def _parse_vago_action(text: str) -> tuple[str, tuple[int, int, int, int]]:
 
 def _infer_vago_text(
     request: VagoTextRequest,
-) -> tuple[str, tuple[int, int, int, int], str, float, int, int]:
+) -> tuple[str, tuple[int, int, int, int], str, float, int, int, int, int]:
     started = time.perf_counter()
+    prefix_ids, vago_cache = _vago_prefix(request.system_prompt)
+    prefix_tokens = int(prefix_ids.shape[-1])
     batch = tokenizer.apply_chat_template(
         [
             {"role": "system", "content": request.system_prompt},
@@ -224,27 +262,54 @@ def _infer_vago_text(
         return_dict=True,
     )
     input_ids = batch["input_ids"].to(model.device)
-    attention_mask = batch.get("attention_mask", torch.ones_like(input_ids)).to(
-        model.device
+    if not torch.equal(input_ids[:, :prefix_tokens], prefix_ids):
+        raise HTTPException(
+            status_code=422, detail="VAGO system prefix is not cacheable"
+        )
+    suffix_ids = input_ids[:, prefix_tokens:]
+    suffix_tokens = int(suffix_ids.shape[-1])
+    prompt_tokens = prefix_tokens + suffix_tokens
+    attention_mask = torch.ones(
+        (1, prompt_tokens), device=model.device, dtype=torch.long
     )
-    prompt_tokens = int(input_ids.shape[-1])
-    generation = {
-        "input_ids": input_ids,
-        "attention_mask": attention_mask,
-        "max_new_tokens": request.max_new_tokens,
-        "use_cache": True,
-        "pad_token_id": tokenizer.eos_token_id,
-        "eos_token_id": tokenizer.eos_token_id,
-    }
-    if request.temperature > 0:
-        generation.update(do_sample=True, temperature=request.temperature)
-    else:
-        generation.update(do_sample=False)
     with torch.inference_mode():
         torch.cuda.synchronize()
-        output = model.generate(**generation)
+        completion_token_ids: list[int] = []
+        try:
+            output = model(
+                input_ids=suffix_ids,
+                attention_mask=attention_mask,
+                past_key_values=vago_cache,
+                use_cache=True,
+            )
+            for _ in range(request.max_new_tokens):
+                logits = output.logits[:, -1, :]
+                if request.temperature > 0:
+                    probabilities = torch.softmax(logits / request.temperature, dim=-1)
+                    next_token = torch.multinomial(probabilities, num_samples=1)
+                else:
+                    next_token = logits.argmax(dim=-1, keepdim=True)
+                token_id = int(next_token.item())
+                completion_token_ids.append(token_id)
+                if token_id == tokenizer.eos_token_id:
+                    break
+                attention_mask = torch.cat(
+                    (
+                        attention_mask,
+                        torch.ones((1, 1), device=model.device, dtype=torch.long),
+                    ),
+                    dim=-1,
+                )
+                output = model(
+                    input_ids=next_token,
+                    attention_mask=attention_mask,
+                    past_key_values=vago_cache,
+                    use_cache=True,
+                )
+        finally:
+            vago_cache.crop(prefix_tokens)
         torch.cuda.synchronize()
-    completion_ids = output[0, prompt_tokens:]
+    completion_ids = torch.tensor(completion_token_ids, device=model.device)
     completion = tokenizer.decode(completion_ids, skip_special_tokens=True)
     compute_ms = (time.perf_counter() - started) * 1000.0
     action, buttons = _parse_vago_action(completion)
@@ -255,6 +320,8 @@ def _infer_vago_text(
         compute_ms,
         prompt_tokens,
         int(completion_ids.shape[-1]),
+        prefix_tokens,
+        suffix_tokens,
     )
 
 
@@ -300,9 +367,16 @@ def vago_text(request: VagoTextRequest) -> dict[str, Any]:
     queued_at = time.perf_counter()
     with _inference_lock:
         acquired_at = time.perf_counter()
-        action, buttons, completion, compute_ms, prompt_tokens, completion_tokens = (
-            _infer_vago_text(request)
-        )
+        (
+            action,
+            buttons,
+            completion,
+            compute_ms,
+            prompt_tokens,
+            completion_tokens,
+            prefix_tokens,
+            suffix_tokens,
+        ) = _infer_vago_text(request)
     return {
         "request_id": request.request_id,
         "action": action,
@@ -314,6 +388,8 @@ def vago_text(request: VagoTextRequest) -> dict[str, Any]:
         "compute_ms": compute_ms,
         "prompt_tokens": prompt_tokens,
         "completion_tokens": completion_tokens,
+        "prefix_tokens": prefix_tokens,
+        "suffix_tokens": suffix_tokens,
         "temperature": request.temperature,
         "max_new_tokens": request.max_new_tokens,
     }
